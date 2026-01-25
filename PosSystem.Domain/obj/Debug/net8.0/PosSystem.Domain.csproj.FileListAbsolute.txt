@@ -1,0 +1,11 @@
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\bin\Debug\net8.0\PosSystem.Domain.deps.json
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\bin\Debug\net8.0\PosSystem.Domain.dll
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\bin\Debug\net8.0\PosSystem.Domain.pdb
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net8.0\PosSystem.Domain.GeneratedMSBuildEditorConfig.editorconfig
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net8.0\PosSystem.Domain.AssemblyInfoInputs.cache
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net8.0\PosSystem.Domain.AssemblyInfo.cs
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net8.0\PosSystem.Domain.csproj.CoreCompileInputs.cache
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net8.0\PosSystem.Domain.dll
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net8.0\refint\PosSystem.Domain.dll
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net8.0\PosSystem.Domain.pdb
+d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net8.0\ref\PosSystem.Domain.dll

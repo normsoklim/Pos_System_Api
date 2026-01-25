@@ -1,0 +1,17 @@
+d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\PosSystem.Application.csproj.AssemblyReference.cache
+d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\PosSystem.Application.GeneratedMSBuildEditorConfig.editorconfig
+d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\PosSystem.Application.AssemblyInfoInputs.cache
+d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\PosSystem.Application.AssemblyInfo.cs
+d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\PosSystem.Application.csproj.CoreCompileInputs.cache
+D:\Api_C#\Pos_WebApi\PosSystem.Application\bin\Debug\net8.0\PosSystem.Application.deps.json
+d:\Api_C#\Pos_WebApi\PosSystem.Application\bin\Debug\net8.0\PosSystem.Application.dll
+d:\Api_C#\Pos_WebApi\PosSystem.Application\bin\Debug\net8.0\PosSystem.Application.pdb
+d:\Api_C#\Pos_WebApi\PosSystem.Application\bin\Debug\net8.0\PosSystem.Domain.dll
+d:\Api_C#\Pos_WebApi\PosSystem.Application\bin\Debug\net8.0\PosSystem.Shared.dll
+d:\Api_C#\Pos_WebApi\PosSystem.Application\bin\Debug\net8.0\PosSystem.Domain.pdb
+d:\Api_C#\Pos_WebApi\PosSystem.Application\bin\Debug\net8.0\PosSystem.Shared.pdb
+D:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\PosSyste.235232F9.Up2Date
+d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\PosSystem.Application.dll
+d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\refint\PosSystem.Application.dll
+d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\PosSystem.Application.pdb
+D:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net8.0\ref\PosSystem.Application.dll
