@@ -3,9 +3,11 @@ namespace  PosSystem.Domain.Entities;
 
 public class  Product 
 {
-    public int Id { get; set; }
+    public Guid Id { get; set; }
 
-    public string ProductName { get; set; }
+    public string ProductName { get; set; } = null!;
+
+    public string Barcode { get; set; } = null!;
 
     public decimal Cost { get; set; }
 
@@ -13,11 +15,13 @@ public class  Product
 
     public int QtyInStock { get; set; }
 
-    public string Description { get; set; }
+    public string Description { get; set; } = null!;
 
-    public Category Category { get; set; }
+     public string? ImageUrl { get; set; }
 
-    public int CategoryId { get; set; }
+    public Guid CategoryId { get; set; }
+
+    public Category Category { get; set; } = null!;
 
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 }

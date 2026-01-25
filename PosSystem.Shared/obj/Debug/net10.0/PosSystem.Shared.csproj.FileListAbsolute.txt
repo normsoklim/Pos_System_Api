@@ -9,3 +9,4 @@ d:\Api_C#\Pos_WebApi\PosSystem.Shared\obj\Debug\net10.0\PosSystem.Shared.dll
 d:\Api_C#\Pos_WebApi\PosSystem.Shared\obj\Debug\net10.0\refint\PosSystem.Shared.dll
 d:\Api_C#\Pos_WebApi\PosSystem.Shared\obj\Debug\net10.0\PosSystem.Shared.pdb
 D:\Api_C#\Pos_WebApi\PosSystem.Shared\obj\Debug\net10.0\ref\PosSystem.Shared.dll
+D:\Api_C#\Pos_WebApi\PosSystem.Shared\obj\Debug\net10.0\PosSystem.Shared.sourcelink.json

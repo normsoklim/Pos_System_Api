@@ -9,3 +9,4 @@ d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net10.0\PosSystem.Domain.dll
 d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net10.0\refint\PosSystem.Domain.dll
 d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net10.0\PosSystem.Domain.pdb
 d:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net10.0\ref\PosSystem.Domain.dll
+D:\Api_C#\Pos_WebApi\PosSystem.Domain\obj\Debug\net10.0\PosSystem.Domain.sourcelink.json

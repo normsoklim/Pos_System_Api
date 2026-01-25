@@ -8,11 +8,13 @@
     ".NETCoreApp,Version=v10.0": {
       "PosSystem.Api/1.0.0": {
         "dependencies": {
-          "Microsoft.AspNetCore.OpenApi": "10.0.0-preview.1.25120.3",
+          "Microsoft.AspNetCore.Identity.EntityFrameworkCore": "10.0.2",
+          "Microsoft.AspNetCore.Identity.UI": "10.0.2",
           "Microsoft.EntityFrameworkCore": "10.0.2",
+          "Microsoft.EntityFrameworkCore.Design": "10.0.2",
           "Microsoft.EntityFrameworkCore.SqlServer": "10.0.2",
-          "Microsoft.EntityFrameworkCore.Tools": "10.0.2",
           "PosSystem.Application": "1.0.0",
+          "PosSystem.Domain": "1.0.0",
           "PosSystem.Infrastructure": "1.0.0",
           "Swashbuckle.AspNetCore": "6.5.0"
         },
@@ -54,14 +56,25 @@
           }
         }
       },
-      "Microsoft.AspNetCore.OpenApi/10.0.0-preview.1.25120.3": {
+      "Microsoft.AspNetCore.Identity.EntityFrameworkCore/10.0.2": {
         "dependencies": {
-          "Microsoft.OpenApi": "2.0.0-preview5"
+          "Microsoft.EntityFrameworkCore.Relational": "10.0.2"
         },
         "runtime": {
-          "lib/net10.0/Microsoft.AspNetCore.OpenApi.dll": {
-            "assemblyVersion": "10.0.0.0",
-            "fileVersion": "10.0.25.12003"
+          "lib/net10.0/Microsoft.AspNetCore.Identity.EntityFrameworkCore.dll": {
+            "assemblyVersion": "10.0.2.0",
+            "fileVersion": "10.0.225.61305"
+          }
+        }
+      },
+      "Microsoft.AspNetCore.Identity.UI/10.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.FileProviders.Embedded": "10.0.2"
+        },
+        "runtime": {
+          "lib/net10.0/Microsoft.AspNetCore.Identity.UI.dll": {
+            "assemblyVersion": "10.0.2.0",
+            "fileVersion": "10.0.225.61305"
           }
         }
       },
@@ -514,15 +527,18 @@
           }
         }
       },
-      "Microsoft.EntityFrameworkCore.Tools/10.0.2": {
-        "dependencies": {
-          "Microsoft.EntityFrameworkCore.Design": "10.0.2"
-        }
-      },
       "Microsoft.Extensions.DependencyModel/10.0.2": {
         "runtime": {
           "lib/net10.0/Microsoft.Extensions.DependencyModel.dll": {
             "assemblyVersion": "10.0.0.2",
+            "fileVersion": "10.0.225.61305"
+          }
+        }
+      },
+      "Microsoft.Extensions.FileProviders.Embedded/10.0.2": {
+        "runtime": {
+          "lib/net10.0/Microsoft.Extensions.FileProviders.Embedded.dll": {
+            "assemblyVersion": "10.0.0.0",
             "fileVersion": "10.0.225.61305"
           }
         }
@@ -614,11 +630,11 @@
           }
         }
       },
-      "Microsoft.OpenApi/2.0.0-preview5": {
+      "Microsoft.OpenApi/1.2.3": {
         "runtime": {
-          "lib/net8.0/Microsoft.OpenApi.dll": {
-            "assemblyVersion": "2.0.0.0",
-            "fileVersion": "2.0.0.0"
+          "lib/netstandard2.0/Microsoft.OpenApi.dll": {
+            "assemblyVersion": "1.2.3.0",
+            "fileVersion": "1.2.3.0"
           }
         }
       },
@@ -666,7 +682,7 @@
       },
       "Swashbuckle.AspNetCore.Swagger/6.5.0": {
         "dependencies": {
-          "Microsoft.OpenApi": "2.0.0-preview5"
+          "Microsoft.OpenApi": "1.2.3"
         },
         "runtime": {
           "lib/net7.0/Swashbuckle.AspNetCore.Swagger.dll": {
@@ -883,12 +899,19 @@
       "path": "humanizer.core/2.14.1",
       "hashPath": "humanizer.core.2.14.1.nupkg.sha512"
     },
-    "Microsoft.AspNetCore.OpenApi/10.0.0-preview.1.25120.3": {
+    "Microsoft.AspNetCore.Identity.EntityFrameworkCore/10.0.2": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-6uzh6S3qk4Dszaewna4OeDnfILHNhwX8x5GLNUtbSPix1g7/ggpDnj8A128cLY0gPULVoWIpMeFIKjmiUjDsPQ==",
-      "path": "microsoft.aspnetcore.openapi/10.0.0-preview.1.25120.3",
-      "hashPath": "microsoft.aspnetcore.openapi.10.0.0-preview.1.25120.3.nupkg.sha512"
+      "sha512": "sha512-+RJnRYpfkDBzFykHfIWsyOmFcAgAUMVNtmXvEuEmhlK4q1exOS9LQN7SW6kSfzITj+ysBwEBMVx5oiOTGQmMeQ==",
+      "path": "microsoft.aspnetcore.identity.entityframeworkcore/10.0.2",
+      "hashPath": "microsoft.aspnetcore.identity.entityframeworkcore.10.0.2.nupkg.sha512"
+    },
+    "Microsoft.AspNetCore.Identity.UI/10.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-DXskKfO8Y5XQw0PV+PJFc38mU99yC//+MIFazEL2eUqEgyRl1m3rGR9+TPOoxoMERpr9KuRGiQXmwb9Vg1EE7w==",
+      "path": "microsoft.aspnetcore.identity.ui/10.0.2",
+      "hashPath": "microsoft.aspnetcore.identity.ui.10.0.2.nupkg.sha512"
     },
     "Microsoft.Bcl.AsyncInterfaces/8.0.0": {
       "type": "package",
@@ -995,19 +1018,19 @@
       "path": "microsoft.entityframeworkcore.sqlserver/10.0.2",
       "hashPath": "microsoft.entityframeworkcore.sqlserver.10.0.2.nupkg.sha512"
     },
-    "Microsoft.EntityFrameworkCore.Tools/10.0.2": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-Q7s7zCjEikOn4e7yS7kMPm3xkKR7CdfUhmN/sdFsKLslvS/iGS8zQUROvZRkbxRISA2SJ6sfho0cX8F8lo1khQ==",
-      "path": "microsoft.entityframeworkcore.tools/10.0.2",
-      "hashPath": "microsoft.entityframeworkcore.tools.10.0.2.nupkg.sha512"
-    },
     "Microsoft.Extensions.DependencyModel/10.0.2": {
       "type": "package",
       "serviceable": true,
       "sha512": "sha512-DHXzj/FKmUDmhzw7AHbMXbNNcgO8Cb9PDbYOUDICjFAdIALy2WbC6pm+dFKiAUNtcYMucZu2iMVw1ef/sdcZFw==",
       "path": "microsoft.extensions.dependencymodel/10.0.2",
       "hashPath": "microsoft.extensions.dependencymodel.10.0.2.nupkg.sha512"
+    },
+    "Microsoft.Extensions.FileProviders.Embedded/10.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KgfcpgdcDdxuwBp1q/KpBHaT0MpPdu5vmQ6hNTiiwg5pKFQBINSF7muRFsf3A0MRey9RZ1AuS0OTHKKq+uv+nQ==",
+      "path": "microsoft.extensions.fileproviders.embedded/10.0.2",
+      "hashPath": "microsoft.extensions.fileproviders.embedded.10.0.2.nupkg.sha512"
     },
     "Microsoft.Identity.Client/4.73.1": {
       "type": "package",
@@ -1065,12 +1088,12 @@
       "path": "microsoft.identitymodel.tokens/7.7.1",
       "hashPath": "microsoft.identitymodel.tokens.7.7.1.nupkg.sha512"
     },
-    "Microsoft.OpenApi/2.0.0-preview5": {
+    "Microsoft.OpenApi/1.2.3": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-hVkzG3wcrPMN8ZCPI+9pzYJA/HgvdZnmf2lf4FzlcRG1lvA9eV0Pceen4dny8H7W0aVUBmgKsUScd2ssw7gpmQ==",
-      "path": "microsoft.openapi/2.0.0-preview5",
-      "hashPath": "microsoft.openapi.2.0.0-preview5.nupkg.sha512"
+      "sha512": "sha512-Nug3rO+7Kl5/SBAadzSMAVgqDlfGjJZ0GenQrLywJ84XGKO0uRqkunz5Wyl0SDwcR71bAATXvSdbdzPrYRYKGw==",
+      "path": "microsoft.openapi/1.2.3",
+      "hashPath": "microsoft.openapi.1.2.3.nupkg.sha512"
     },
     "Microsoft.SqlServer.Server/1.0.0": {
       "type": "package",

@@ -7,7 +7,7 @@ namespace PosSystem.Application.Services;
 
 public class CategoryService : ICategoryService
 {
-      private readonly ICategoryRepository _repo;
+    private readonly ICategoryRepository _repo;
 
     public CategoryService(ICategoryRepository repo)
     {

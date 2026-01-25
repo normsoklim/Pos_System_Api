@@ -19,3 +19,4 @@ d:\Api_C#\Pos_WebApi\PosSystem.Infrastructure\obj\Debug\net10.0\refint\PosSystem
 d:\Api_C#\Pos_WebApi\PosSystem.Infrastructure\obj\Debug\net10.0\PosSystem.Infrastructure.pdb
 D:\Api_C#\Pos_WebApi\PosSystem.Infrastructure\obj\Debug\net10.0\PosSystem.Infrastructure.genruntimeconfig.cache
 D:\Api_C#\Pos_WebApi\PosSystem.Infrastructure\obj\Debug\net10.0\ref\PosSystem.Infrastructure.dll
+D:\Api_C#\Pos_WebApi\PosSystem.Infrastructure\obj\Debug\net10.0\PosSystem.Infrastructure.sourcelink.json

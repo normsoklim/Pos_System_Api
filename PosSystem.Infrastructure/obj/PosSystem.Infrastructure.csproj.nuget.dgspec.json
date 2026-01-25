@@ -1,7 +1,7 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj": {}
+    "d:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj": {}
   },
   "projects": {
     "d:\\Api_C#\\Pos_WebApi\\PosSystem.Application\\PosSystem.Application.csproj": {
@@ -35,8 +35,8 @@
               "d:\\Api_C#\\Pos_WebApi\\PosSystem.Domain\\PosSystem.Domain.csproj": {
                 "projectPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Domain\\PosSystem.Domain.csproj"
               },
-              "D:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj": {
-                "projectPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj"
+              "d:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj": {
+                "projectPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj"
               }
             }
           }
@@ -689,14 +689,14 @@
         }
       }
     },
-    "D:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj": {
+    "d:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj",
+        "projectUniqueName": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj",
         "projectName": "PosSystem.Infrastructure",
-        "projectPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj",
+        "projectPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj",
         "packagesPath": "C:\\Users\\MSI-PC\\.nuget\\packages\\",
-        "outputPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\obj\\",
+        "outputPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -1057,14 +1057,14 @@
         }
       }
     },
-    "D:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj": {
+    "d:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj",
+        "projectUniqueName": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj",
         "projectName": "PosSystem.Shared",
-        "projectPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj",
+        "projectPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\PosSystem.Shared.csproj",
         "packagesPath": "C:\\Users\\MSI-PC\\.nuget\\packages\\",
-        "outputPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\obj\\",
+        "outputPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Shared\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

@@ -15,3 +15,4 @@ d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net10.0\PosSystem.Applicati
 d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net10.0\refint\PosSystem.Application.dll
 d:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net10.0\PosSystem.Application.pdb
 D:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net10.0\ref\PosSystem.Application.dll
+D:\Api_C#\Pos_WebApi\PosSystem.Application\obj\Debug\net10.0\PosSystem.Application.sourcelink.json

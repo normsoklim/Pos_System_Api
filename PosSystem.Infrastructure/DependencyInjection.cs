@@ -14,6 +14,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<ICategoryService, CategoryService>();
             
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IProductService, ProductService>();
+            
             // Add other service registrations here as needed
             
             return services;
