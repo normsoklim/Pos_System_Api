@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "1a1BOYboy1o=",
+  "dgSpecHash": "dVhgS8I/8oA=",
   "success": true,
-  "projectFilePath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj",
+  "projectFilePath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MSI-PC\\.nuget\\packages\\azure.core\\1.47.1\\azure.core.1.47.1.nupkg.sha512",
     "C:\\Users\\MSI-PC\\.nuget\\packages\\azure.identity\\1.14.2\\azure.identity.1.14.2.nupkg.sha512",
