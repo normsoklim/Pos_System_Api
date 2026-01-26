@@ -24,6 +24,7 @@ namespace PosSystem.Application.Services
                 ProductName = p.ProductName,
                 Barcode = p.Barcode,
                 Cost = p.Cost,
+                SellPrice = p.Cost * 1.2m, // Assuming a 20% markup for SellPrice
                 QtyInStock = p.QtyInStock,
                 Description = p.Description,
                 ImageUrl = p.ImageUrl,
@@ -42,6 +43,7 @@ namespace PosSystem.Application.Services
                 ProductName = product.ProductName,
                 Barcode = product.Barcode,
                 Cost = product.Cost,
+                SellPrice = product.Cost * 1.2m, // Assuming a 20% markup for SellPrice
                 QtyInStock = product.QtyInStock,
                 Description = product.Description,
                 ImageUrl = product.ImageUrl,
@@ -56,6 +58,7 @@ namespace PosSystem.Application.Services
                 ProductName = dto.ProductName,
                 Barcode = dto.Barcode,
                 Cost = dto.Cost,
+                SellPrice = dto.Cost * 1.2m,
                 QtyInStock = dto.QtyInStock,
                 Description = dto.Description,
                 ImageUrl = dto.ImageUrl,
@@ -73,6 +76,7 @@ namespace PosSystem.Application.Services
             existingProduct.ProductName = dto.ProductName;
             existingProduct.Barcode = dto.Barcode;
             existingProduct.Cost = dto.Cost;
+            existingProduct.SellPrice = dto.Cost * 1.2m;
             existingProduct.QtyInStock = dto.QtyInStock;
             existingProduct.Description = dto.Description;
             existingProduct.ImageUrl = dto.ImageUrl;
