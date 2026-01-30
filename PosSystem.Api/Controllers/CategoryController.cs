@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PosSystem.Application.DTOs.Category;
 using PosSystem.Application.Interfaces.Services;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PosSystem.Api.Controllers;
 
@@ -30,6 +31,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
+    [Authorize(Policy = "ManageCategories")]
     public async Task<IActionResult> Create(CreateCategoryDto dto)
     {
         await _service.CreateAsync(dto);
@@ -37,6 +39,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut("{id}")]
+    [Authorize(Policy = "ManageCategories")]
     public async Task<IActionResult> Update(Guid id, UpdateCategoryDto dto)
     {
         await _service.UpdateAsync(id, dto);
@@ -44,6 +47,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = "ManageCategories")]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _service.DeleteAsync(id);

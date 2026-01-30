@@ -29,11 +29,7 @@ namespace PosSystem.Api.Models
         [Range(0, double.MaxValue, ErrorMessage = "Cost must be a positive value")]
         public decimal Cost { get; set; }
         
-        /// <summary>
-        /// Selling price of the product
-        /// </summary>
-        [Range(0, double.MaxValue, ErrorMessage = "SellPrice must be a positive value")]
-        public decimal SellPrice { get; set; }
+        
         
         /// <summary>
         /// Quantity in stock

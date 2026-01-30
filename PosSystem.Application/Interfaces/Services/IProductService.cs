@@ -12,6 +12,7 @@ namespace PosSystem.Application.Interfaces.Services
         Task<ProductDto> GetByIdAsync(Guid id);
         Task CreateAsync(CreateProductDto dto);
         Task UpdateAsync(Guid id, UpdateProductDto dto);
+        Task UpdatePartialAsync(Guid id, UpdateProductPartialDto dto);
         Task DeleteAsync(Guid id);
     }
 }

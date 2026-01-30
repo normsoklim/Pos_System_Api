@@ -8,10 +8,12 @@ namespace PosSystem.Application.Services
     public class ProductService : IProductService
     {
         private readonly IProductRepository _repo;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public ProductService(IProductRepository productRepository)
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
             _repo = productRepository;
+            _categoryRepository = categoryRepository;
         }
         
         public async Task<List<ProductDto>> GetAllAsync()
@@ -52,6 +54,18 @@ namespace PosSystem.Application.Services
         }
         public async Task CreateAsync(CreateProductDto dto)
         {
+            // Validate that the CategoryId is not empty and exists before creating
+            if (dto.CategoryId == Guid.Empty)
+            {
+                throw new Exception("CategoryId is required when creating a product.");
+            }
+            
+            var category = await _categoryRepository.GetByIdAsync(dto.CategoryId);
+            if (category == null)
+            {
+                throw new Exception($"Category with ID {dto.CategoryId} does not exist.");
+            }
+
             var product = new Domain.Entities.Product
             {
                 Id = Guid.NewGuid(),
@@ -62,7 +76,7 @@ namespace PosSystem.Application.Services
                 QtyInStock = dto.QtyInStock,
                 Description = dto.Description,
                 ImageUrl = dto.ImageUrl,
-                CategoryId = dto.CategoryId
+                CategoryId = dto.CategoryId  // This will be non-null since we validated it above
             };
 
             await _repo.AddAsync(product);
@@ -73,6 +87,19 @@ namespace PosSystem.Application.Services
             var existingProduct = await _repo.GetByIdAsync(id)
                 ?? throw new Exception("Product not found");
 
+            // Only validate and update CategoryId if it's provided (not null)
+            if (dto.CategoryId.HasValue && dto.CategoryId.Value != Guid.Empty)
+            {
+                var category = await _categoryRepository.GetByIdAsync(dto.CategoryId.Value);
+                if (category == null)
+                {
+                    throw new Exception($"Category with ID {dto.CategoryId} does not exist.");
+                }
+                
+                existingProduct.CategoryId = dto.CategoryId.Value;
+            }
+            // If dto.CategoryId is null, we keep the existing CategoryId
+
             existingProduct.ProductName = dto.ProductName;
             existingProduct.Barcode = dto.Barcode;
             existingProduct.Cost = dto.Cost;
@@ -80,7 +107,51 @@ namespace PosSystem.Application.Services
             existingProduct.QtyInStock = dto.QtyInStock;
             existingProduct.Description = dto.Description;
             existingProduct.ImageUrl = dto.ImageUrl;
-            existingProduct.CategoryId = dto.CategoryId;
+
+            await _repo.UpdateAsync(existingProduct);
+        }
+
+        public async Task UpdatePartialAsync(Guid id, UpdateProductPartialDto dto)
+        {
+            var existingProduct = await _repo.GetByIdAsync(id)
+                ?? throw new Exception("Product not found");
+
+            // Only update fields that are provided in the DTO
+            if (!string.IsNullOrEmpty(dto.ProductName))
+                existingProduct.ProductName = dto.ProductName;
+                
+            if (!string.IsNullOrEmpty(dto.Barcode))
+                existingProduct.Barcode = dto.Barcode;
+                
+            if (dto.Cost.HasValue)
+            {
+                existingProduct.Cost = dto.Cost.Value;
+                // Update SellPrice based on Cost (assuming 20% markup)
+                existingProduct.SellPrice = dto.Cost.Value * 1.2m;
+            }
+                
+            if (dto.QtyInStock.HasValue)
+                existingProduct.QtyInStock = dto.QtyInStock.Value;
+                
+            if (!string.IsNullOrEmpty(dto.Description))
+                existingProduct.Description = dto.Description;
+                
+            if (dto.ImageUrl != null) // Allow setting to null
+                existingProduct.ImageUrl = dto.ImageUrl;
+                
+            if (dto.CategoryId.HasValue)
+            {
+                // Validate that the CategoryId exists before updating
+                if (dto.CategoryId.Value != Guid.Empty)
+                {
+                    var category = await _categoryRepository.GetByIdAsync(dto.CategoryId.Value);
+                    if (category == null)
+                    {
+                        throw new Exception($"Category with ID {dto.CategoryId} does not exist.");
+                    }
+                    existingProduct.CategoryId = dto.CategoryId.Value;
+                }
+            }
 
             await _repo.UpdateAsync(existingProduct);
         }

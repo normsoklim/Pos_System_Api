@@ -1,9 +1,9 @@
-
 using Microsoft.Extensions.DependencyInjection;
 using PosSystem.Application.Interfaces.Repositories;
 using PosSystem.Application.Interfaces.Services;
 using PosSystem.Application.Services;
 using PosSystem.Infrastructure.Persistence.Repositories;
+
 
 namespace Microsoft.Extensions.DependencyInjection
 {
@@ -16,6 +16,12 @@ namespace Microsoft.Extensions.DependencyInjection
             
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
+            
+            // Authentication services
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IRefreshTokenRepository, RefreshTokenRepository>();
             
             // Add other service registrations here as needed
             

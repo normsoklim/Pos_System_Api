@@ -1,4 +1,6 @@
 
+using System.Text.Json.Serialization;
+
 namespace PosSystem.Application.DTOs.Product
 {
     public class ProductDto
@@ -7,6 +9,7 @@ namespace PosSystem.Application.DTOs.Product
         public string ProductName { get; set; } = null!;
         public string Barcode { get; set; } = null!;
         public decimal Cost { get; set; }
+        
         public decimal SellPrice { get; set; }
         public int QtyInStock { get; set; }
         public string Description { get; set; } = null!;

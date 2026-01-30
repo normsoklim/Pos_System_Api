@@ -1,27 +1,29 @@
 
-namespace  PosSystem.Domain.Entities;
+using System.Text.Json.Serialization;
 
-public class  Product 
-{
-    public Guid Id { get; set; }
+namespace PosSystem.Domain.Entities;
 
-    public string ProductName { get; set; } = null!;
+    public class  Product 
+    {
+        public Guid Id { get; set; }
 
-    public string Barcode { get; set; } = null!;
+        public string ProductName { get; set; } = null!;
 
-    public decimal Cost { get; set; }
+        public string Barcode { get; set; } = null!;
 
-    public decimal SellPrice { get; set; }
+        public decimal Cost { get; set; }
 
-    public int QtyInStock { get; set; }
+        public decimal SellPrice { get; set; }
 
-    public string Description { get; set; } = null!;
+        public int QtyInStock { get; set; }
 
-     public string? ImageUrl { get; set; }
+        public string Description { get; set; } = null!;
 
-    public Guid CategoryId { get; set; }
+         public string? ImageUrl { get; set; }
 
-    public Category Category { get; set; } = null!;
+        public Guid CategoryId { get; set; }
 
-    public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
-}
+        public Category Category { get; set; } = null!;
+
+        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+    }

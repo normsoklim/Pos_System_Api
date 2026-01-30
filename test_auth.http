@@ -1,0 +1,32 @@
+### Test Public Endpoint
+GET http://localhost:5055/api/test/public
+Content-Type: application/json
+
+### Register a new user
+POST http://localhost:5055/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "email": "test@example.com",
+  "password": "TestPass123!",
+  "firstName": "Test",
+  "lastName": "User"
+}
+
+### Login with the registered user
+POST http://localhost:5055/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "testuser",
+  "password": "TestPass123!"
+}
+
+### Test Protected Endpoint (use the token from login response)
+GET http://localhost:5055/api/test/protected
+Authorization: Bearer {token}
+
+### Test Admin Endpoint (should fail without admin role)
+GET http://localhost:5055/api/test/admin
+Authorization: Bearer {token}
