@@ -4,37 +4,6 @@
         <name>PosSystem.Api</name>
     </assembly>
     <members>
-        <member name="M:PosSystem.Api.Controllers.ProductController.Create(PosSystem.Api.Models.CreateProductModel)">
-            <summary>
-            Create a new product with an optional image upload
-            </summary>
-            <param name="model">Product creation model with optional image</param>
-            <returns>Success message if product is created</returns>
-        </member>
-        <member name="M:PosSystem.Api.Controllers.ProductController.Update(System.Guid,PosSystem.Api.Models.UpdateProductModel)">
-            <summary>
-            Update an existing product with an optional image upload
-            </summary>
-            <param name="id">Product ID to update</param>
-            <param name="model">Product update model with optional image</param>
-            <returns>Success message if product is updated</returns>
-        </member>
-        <member name="M:PosSystem.Api.Controllers.ProductController.UpdatePartialJson(System.Guid,PosSystem.Application.DTOs.Product.UpdateProductPartialDto)">
-            <summary>
-            Partially update an existing product with JSON data
-            </summary>
-            <param name="id">Product ID to update</param>
-            <param name="dto">Product partial update DTO with only the fields to update</param>
-            <returns>Success message if product is updated</returns>
-        </member>
-        <member name="M:PosSystem.Api.Controllers.ProductController.UpdatePartialForm(System.Guid,PosSystem.Api.Models.UpdateProductPartialModel)">
-            <summary>
-            Partially update an existing product with an optional image upload
-            </summary>
-            <param name="id">Product ID to update</param>
-            <param name="model">Product partial update model with optional image</param>
-            <returns>Success message if product is updated</returns>
-        </member>
         <member name="T:PosSystem.Api.Models.CreateProductModel">
             <summary>
             Model for creating a product with an optional image file
@@ -50,9 +19,9 @@
             Barcode of the product
             </summary>
         </member>
-        <member name="P:PosSystem.Api.Models.CreateProductModel.Cost">
+        <member name="P:PosSystem.Api.Models.CreateProductModel.Price">
             <summary>
-            Cost of the product
+            Price of the product
             </summary>
         </member>
         <member name="P:PosSystem.Api.Models.CreateProductModel.QtyInStock">
@@ -96,7 +65,7 @@
             Barcode of the product
             </summary>
         </member>
-        <member name="P:PosSystem.Api.Models.UpdateProductModel.Cost">
+        <member name="P:PosSystem.Api.Models.UpdateProductModel.Price">
             <summary>
             Cost of the product
             </summary>
@@ -141,9 +110,9 @@
             Barcode of the product (optional)
             </summary>
         </member>
-        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.Cost">
+        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.Price">
             <summary>
-            Cost of the product (optional)
+            Price of the product (optional)
             </summary>
         </member>
         <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.QtyInStock">

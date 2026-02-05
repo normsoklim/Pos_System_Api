@@ -36,9 +36,14 @@ namespace PosSystem.Api.Extensions
             return builder.UseMiddleware<Security.RequestSizeLimitingMiddleware>(maxRequestBodySize);
         }
         
-        public static IApplicationBuilder UseExceptionMiddleware(this IApplicationBuilder builder)
-        {
-            return builder.UseMiddleware<Middleware.ExceptionMiddleware>();
-        }
+         public static IApplicationBuilder UseRequestBodyBufferingMiddleware(this IApplicationBuilder builder)
+         {
+             return builder.UseMiddleware<Security.RequestBodyBufferingMiddleware>();
+         }
+         
+         public static IApplicationBuilder UseExceptionMiddleware(this IApplicationBuilder builder)
+         {
+             return builder.UseMiddleware<Middleware.ExceptionMiddleware>();
+         }
     }
 }

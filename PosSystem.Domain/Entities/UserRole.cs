@@ -1,13 +1,25 @@
-using System;
-using System.Collections.Generic;
-using PosSystem.Domain.Entities;
-namespace PosSystem.Domain.Entities;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
-public class UserRole
+namespace PosSystem.Domain.Entities
 {
-    public int UserId { get; set; }
-    public User User { get; set; } = null!;
-    
-    public int RoleId { get; set; }
-    public Role Role { get; set; } = null!;
+    [Table("UserRoles")]
+    public class UserRole
+    {
+        [Key]
+        public int Id { get; set; }
+        
+        public int UserId { get; set; }
+        
+        public int RoleId { get; set; }
+        
+        public DateTime AssignedAt { get; set; } = DateTime.UtcNow;
+        
+        // Navigation properties
+        [ForeignKey("UserId")]
+        public virtual User User { get; set; } = null!;
+        
+        [ForeignKey("RoleId")]
+        public virtual Role Role { get; set; } = null!;
+    }
 }

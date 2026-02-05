@@ -19,7 +19,7 @@ namespace PosSystem.Infrastructure.Migrations
  
              // Create a temporary table to store the existing data
              migrationBuilder.Sql(@"
-                 SELECT Id, ProductName, Cost, SellPrice, QtyInStock, Description, CategoryId, CreatedAt
+                 SELECT Id, ProductName, Price, QtyInStock, Description, CategoryId, CreatedAt
                  INTO [Products_Temp]
                  FROM [Products]
              ");
@@ -33,8 +33,7 @@ namespace PosSystem.Infrastructure.Migrations
                      [Id] uniqueidentifier NOT NULL,
                      [ProductName] nvarchar(255) NOT NULL,
                      [Barcode] nvarchar(100) NOT NULL DEFAULT '',
-                     [Cost] decimal(18,2) NOT NULL,
-                     [SellPrice] decimal(18,2) NOT NULL,
+                     [Price] decimal(18,2) NOT NULL,
                      [QtyInStock] int NOT NULL,
                      [Description] nvarchar(1000) NOT NULL,
                      [ImageUrl] nvarchar(500) NULL,
@@ -53,8 +52,8 @@ namespace PosSystem.Infrastructure.Migrations
              // we need to handle the conversion appropriately
              // For existing data, we'll generate new Guids for the Id and use the first CategoryId for all records
              migrationBuilder.Sql(@"
-                 INSERT INTO [Products] ([Id], [ProductName], [Barcode], [Cost], [SellPrice], [QtyInStock], [Description], [ImageUrl], [CategoryId], [CreatedAt])
-                 SELECT NEWID(), [ProductName], '', [Cost], [SellPrice], [QtyInStock], [Description], NULL,
+                 INSERT INTO [Products] ([Id], [ProductName], [Barcode], [Price], [QtyInStock], [Description], [ImageUrl], [CategoryId], [CreatedAt])
+                 SELECT NEWID(), [ProductName], '', [Price], [QtyInStock], [Description], NULL,
                         (SELECT TOP 1 [Id] FROM [Categories]), [CreatedAt]
                  FROM [Products_Temp]
              ");
@@ -68,7 +67,7 @@ namespace PosSystem.Infrastructure.Migrations
          {
              // Store data from the new schema in a temporary table
              migrationBuilder.Sql(@"
-                 SELECT Id, ProductName, Cost, SellPrice, QtyInStock, Description, CategoryId, CreatedAt
+                 SELECT Id, ProductName, Price, QtyInStock, Description, CategoryId, CreatedAt
                  INTO [Products_Restore]
                  FROM [Products]
              ");
@@ -81,8 +80,7 @@ namespace PosSystem.Infrastructure.Migrations
                  CREATE TABLE [Products] (
                      [Id] int IDENTITY(1,1) NOT NULL,
                      [ProductName] nvarchar(max) NOT NULL,
-                     [Cost] decimal(18,2) NOT NULL,
-                     [SellPrice] decimal(18,2) NOT NULL,
+                     [Price] decimal(18,2) NOT NULL,
                      [QtyInStock] int NOT NULL,
                      [Description] nvarchar(max) NOT NULL,
                      [CategoryId1] uniqueidentifier NOT NULL,

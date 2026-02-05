@@ -32,34 +32,41 @@ namespace PosSystem.Api.Middleware
             }
         }
 
-        private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
-        {
-            context.Response.ContentType = "application/json";
+         private static async Task HandleExceptionAsync(HttpContext context, Exception exception)
+         {
+             // Check if the response has already started (headers sent), if so, we can't modify it
+             if (context.Response.HasStarted)
+             {
+                 // Log the error but can't send response since headers are already sent
+                 return;
+             }
 
-            var response = new
-            {
-                Error = "An error occurred while processing your request",
-                Message = "Internal Server Error",
-                RequestId = context.TraceIdentifier
-            };
+             context.Response.ContentType = "application/json";
 
-            // Set appropriate status code based on exception type
-            context.Response.StatusCode = exception switch
-            {
-                UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
-                ArgumentException => StatusCodes.Status400BadRequest,
-                KeyNotFoundException => StatusCodes.Status404NotFound,
-                InvalidOperationException => StatusCodes.Status409Conflict,
-                _ => StatusCodes.Status500InternalServerError
-            };
+             var response = new
+             {
+                 Error = "An error occurred while processing your request",
+                 Message = "Internal Server Error",
+                 RequestId = context.TraceIdentifier
+             };
 
-            // Serialize and write the response
-            var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase
-            });
+             // Set appropriate status code based on exception type
+             context.Response.StatusCode = exception switch
+             {
+                 UnauthorizedAccessException => StatusCodes.Status401Unauthorized,
+                 ArgumentException => StatusCodes.Status400BadRequest,
+                 KeyNotFoundException => StatusCodes.Status404NotFound,
+                 InvalidOperationException => StatusCodes.Status409Conflict,
+                 _ => StatusCodes.Status500InternalServerError
+             };
 
-            await context.Response.WriteAsync(jsonResponse);
-        }
+             // Serialize and write the response
+             var jsonResponse = JsonSerializer.Serialize(response, new JsonSerializerOptions
+             {
+                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+             });
+
+             await context.Response.WriteAsync(jsonResponse);
+         }
     }
 }

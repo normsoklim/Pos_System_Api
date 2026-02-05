@@ -14,6 +14,13 @@ namespace PosSystem.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
+        public async Task<RefreshToken?> GetByTokenAsync(string token)
+        {
+            return await _context.RefreshTokens
+                .Include(rt => rt.User)
+                .FirstOrDefaultAsync(rt => rt.Token == token && !rt.IsRevoked);
+        }
+
         public async Task<RefreshToken> CreateAsync(RefreshToken refreshToken)
         {
             _context.RefreshTokens.Add(refreshToken);
@@ -21,66 +28,22 @@ namespace PosSystem.Infrastructure.Persistence.Repositories
             return refreshToken;
         }
 
-        public async Task<RefreshToken?> GetByTokenAsync(string token)
-        {
-            return await _context.RefreshTokens
-                .Include(rt => rt.User)
-                .FirstOrDefaultAsync(rt => rt.Token == token);
-        }
-
-        public async Task<RefreshToken?> GetValidTokenAsync(string token)
-        {
-            return await _context.RefreshTokens
-                .Include(rt => rt.User)
-                .FirstOrDefaultAsync(rt => rt.Token == token && rt.IsActive);
-        }
-
-        public async Task<bool> RevokeTokenAsync(string token, string ipAddress)
+        public async Task<bool> RevokeAsync(string token)
         {
             var refreshToken = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == token);
-            if (refreshToken == null)
-            {
-                return false;
-            }
+            if (refreshToken == null) return false;
 
+            refreshToken.IsRevoked = true;
             refreshToken.RevokedAt = DateTime.UtcNow;
-            refreshToken.RevokedByIp = ipAddress;
-
+            _context.RefreshTokens.Update(refreshToken);
             await _context.SaveChangesAsync();
             return true;
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public async Task<bool> IsTokenRevokedAsync(string token)
         {
-            var refreshToken = await _context.RefreshTokens.FindAsync(id);
-            if (refreshToken == null)
-            {
-                return false;
-            }
-
-            _context.RefreshTokens.Remove(refreshToken);
-            var rowsAffected = await _context.SaveChangesAsync();
-            return rowsAffected > 0;
-        }
-
-        public async Task<IEnumerable<RefreshToken>> GetByUserIdAsync(int userId)
-        {
-            return await _context.RefreshTokens
-                .Where(rt => rt.UserId == userId)
-                .ToListAsync();
-        }
-
-        public async Task CleanExpiredTokensAsync()
-        {
-            var expiredTokens = await _context.RefreshTokens
-                .Where(rt => rt.IsExpired)
-                .ToListAsync();
-
-            if (expiredTokens.Any())
-            {
-                _context.RefreshTokens.RemoveRange(expiredTokens);
-                await _context.SaveChangesAsync();
-            }
+            var tokenEntity = await _context.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == token);
+            return tokenEntity != null && tokenEntity.IsRevoked;
         }
     }
 }

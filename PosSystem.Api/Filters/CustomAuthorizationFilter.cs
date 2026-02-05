@@ -15,27 +15,22 @@ namespace PosSystem.Api.Filters
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            // Check if the user is authenticated
-            if (!context.HttpContext.User.Identity.IsAuthenticated)
+            var user = context.HttpContext.User;
+            
+            // Check if user is authenticated
+            if (user?.Identity?.IsAuthenticated != true)
             {
-                _logger.LogWarning("Unauthorized access attempt to {Controller}.{Action} from IP {IP}", 
-                    context.RouteData.Values["controller"], 
-                    context.RouteData.Values["action"], 
-                    GetClientIpAddress(context.HttpContext));
-
+                _logger.LogWarning("Unauthorized access attempt from IP: {IP}", GetClientIpAddress(context.HttpContext));
                 context.Result = new UnauthorizedResult();
                 return;
             }
 
-            // Log successful authorization
-            var userId = context.HttpContext.User.FindFirst("nameid")?.Value ?? "unknown";
-            var username = context.HttpContext.User.FindFirst("unique_name")?.Value ?? "unknown";
+            // Log successful authentication
+            var userId = user.FindFirst("name")?.Value ?? "unknown";
+            var apiKeyAuthenticated = user.FindFirst("api_key_authenticated")?.Value ?? "false";
             
-            _logger.LogInformation("Authorization successful for user {UserId} ({Username}) accessing {Controller}.{Action}", 
-                userId, 
-                username, 
-                context.RouteData.Values["controller"], 
-                context.RouteData.Values["action"]);
+            _logger.LogInformation("User {UserId} with API key authentication status {ApiKeyStatus} accessed {Path}",
+                userId, apiKeyAuthenticated, context.HttpContext.Request.Path);
         }
 
         private string GetClientIpAddress(HttpContext context)

@@ -60,7 +60,7 @@ namespace PosSystem.Infrastructure.Migrations
                     b.Property<Guid>("CategoryId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<decimal>("Cost")
+                    b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedAt")
@@ -84,9 +84,6 @@ namespace PosSystem.Infrastructure.Migrations
 
                     b.Property<int>("QtyInStock")
                         .HasColumnType("int");
-
-                    b.Property<decimal>("SellPrice")
-                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 

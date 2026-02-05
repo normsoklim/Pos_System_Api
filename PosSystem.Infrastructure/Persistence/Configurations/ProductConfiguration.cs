@@ -12,8 +12,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
         builder.Property(p => p.Id).ValueGeneratedOnAdd(); // Using Guid with ValueGeneratedOnAdd
         builder.Property(p => p.ProductName).IsRequired().HasMaxLength(255);
         builder.Property(p => p.Barcode).IsRequired().HasMaxLength(100);
-        builder.Property(p => p.Cost).HasColumnType("decimal(18,2)");
-        builder.Property(p => p.SellPrice).HasColumnType("decimal(18,2)");
+        builder.Property(p => p.Price).HasColumnType("decimal(18,2)");
         builder.Property(p => p.Description).HasMaxLength(1000);
         builder.Property(p => p.ImageUrl).HasMaxLength(500);
         builder.Property(p => p.CreatedAt).HasDefaultValueSql("GETUTCDATE()");

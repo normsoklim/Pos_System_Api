@@ -4,12 +4,9 @@ namespace PosSystem.Application.Interfaces.Repositories
 {
     public interface IRefreshTokenRepository
     {
-        Task<RefreshToken> CreateAsync(RefreshToken refreshToken);
         Task<RefreshToken?> GetByTokenAsync(string token);
-        Task<RefreshToken?> GetValidTokenAsync(string token);
-        Task<bool> RevokeTokenAsync(string token, string ipAddress);
-        Task<bool> DeleteAsync(int id);
-        Task<IEnumerable<RefreshToken>> GetByUserIdAsync(int userId);
-        Task CleanExpiredTokensAsync();
+        Task<RefreshToken> CreateAsync(RefreshToken refreshToken);
+        Task<bool> RevokeAsync(string token);
+        Task<bool> IsTokenRevokedAsync(string token);
     }
 }

@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using System.ComponentModel.DataAnnotations;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace PosSystem.Api.Models
 {
@@ -27,8 +26,8 @@ namespace PosSystem.Api.Models
         /// <summary>
         /// Cost of the product
         /// </summary>
-        [Range(0, double.MaxValue, ErrorMessage = "Cost must be a positive value")]
-        public decimal Cost { get; set; }
+        [Range(0, double.MaxValue, ErrorMessage = "Price must be a positive value")]
+        public decimal Price { get; set; }
         
         
         
@@ -47,7 +46,6 @@ namespace PosSystem.Api.Models
         /// <summary>
         /// Image file to upload (optional if ImageUrl is provided)
         /// </summary>
-        [SwaggerSchema(Description = "Image file to upload (jpg, jpeg, png, webp)", Format = "binary")]
         public IFormFile? ImageFile { get; set; }
         
         /// <summary>

@@ -1,38 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using PosSystem.Infrastructure.Persistence;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.OpenApi.Models;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 using PosSystem.Application.Interfaces.Repositories;
-using PosSystem.Api.Services;
 using Microsoft.Extensions.Configuration;
 using PosSystem.Api.Extensions;
 using Microsoft.AspNetCore.RateLimiting;
 using System.Threading.RateLimiting;
+using PosSystem.Api.Filters;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using PosSystem.Api.Security;
-
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Hosting;
+using PosSystem.Application.Interfaces.Services;
+using PosSystem.Api.Services;
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-builder.Services.AddControllers();
+              // Add services to the container.
+              builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-
-// Configure Swagger with annotations
-builder.Services.AddSwaggerGen(c =>
-{
-    c.SwaggerDoc("v1", new OpenApiInfo { Title = "POS System API", Version = "v1" });
-    c.EnableAnnotations(); // Enable annotations support
-    
-    // Optional: Add XML comments if available
-    var xmlFile = $"{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}.xml";
-    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-    if (File.Exists(xmlPath))
-    {
-        c.IncludeXmlComments(xmlPath);
-    }
-});
 
 // Add database context
 builder.Services.AddDbContext<AppDbContext>(options =>
@@ -58,44 +44,6 @@ builder.Services.AddCors(options =>
     });
 });
 
-// Add JWT authentication
-var jwtSecret = builder.Configuration["Jwt:Secret"] ?? throw new ArgumentNullException("Jwt:Secret not found in configuration");
-var jwtExpiryInMinutes = int.Parse(builder.Configuration["Jwt:ExpiryInMinutes"] ?? "60");
-var jwtIssuer = builder.Configuration["Jwt:Issuer"] ?? "PosSystem.Api";
-var jwtAudience = builder.Configuration["Jwt:Audience"] ?? "PosSystem.Api";
-
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
-.AddJwtBearer(options =>
-{
-    options.TokenValidationParameters = new TokenValidationParameters
-    {
-        ValidateIssuerSigningKey = true,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwtSecret)),
-        ValidateIssuer = true,
-        ValidIssuer = jwtIssuer,
-        ValidateAudience = true,
-        ValidAudience = jwtAudience,
-        ValidateLifetime = true,
-        ClockSkew = TimeSpan.Zero // Recommended for production to avoid issues with token expiration
-    };
-});
-
-// Add authorization
-builder.Services.AddAuthorization(options =>
-{
-    // Define policies for product and category management
-    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("ManageProducts", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("ManageCategories", policy => policy.RequireRole("Admin"));
-    
-    // Add additional security policies
-    options.AddPolicy("RequireApiKey", policy =>
-        policy.RequireClaim("api_key_authenticated", "true"));
-});
 
 // Add rate limiting
 builder.Services.AddRateLimiter(_ => _
@@ -110,41 +58,116 @@ builder.Services.AddRateLimiter(_ => _
 // Add infrastructure services
 builder.Services.AddInfrastructureServices();
 
+// Add file service
+builder.Services.AddScoped<IFileService, FileService>();
+
+// Add JWT Authentication
+var jwtSettings = builder.Configuration.GetSection("Jwt");
+var secretKey = jwtSettings["Key"] ?? "THIS_IS_A_SUPER_SECRET_KEY_123";
+var issuer = jwtSettings["Issuer"] ?? "PosSystem";
+var audience = jwtSettings["Audience"] ?? "PosSystemUsers";
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = issuer,
+            ValidAudience = audience,
+            IssuerSigningKey = new SymmetricSecurityKey(
+                Encoding.UTF8.GetBytes(secretKey)
+            ),
+            ClockSkew = TimeSpan.Zero // Default: 5 min
+        };
+    });
+
+// Add Authorization with Policies
+builder.Services.AddAuthorization(options =>
+{
+    // Define policies for POS system permissions
+    options.AddPolicy("CanCreateProduct", policy =>
+        policy.RequireRole("Admin", "Manager"));
+    options.AddPolicy("CanUpdateProduct", policy =>
+        policy.RequireRole("Admin", "Manager"));
+    options.AddPolicy("CanDeleteProduct", policy =>
+        policy.RequireRole("Admin"));
+    options.AddPolicy("CanSell", policy =>
+        policy.RequireRole("Admin", "Cashier"));
+    options.AddPolicy("CanManageUsers", policy =>
+        policy.RequireRole("Admin"));
+    options.AddPolicy("CanViewReports", policy =>
+        policy.RequireRole("Admin", "Manager"));
+    options.AddPolicy("CanManageStock", policy =>
+        policy.RequireRole("Admin", "Manager"));
+    options.AddPolicy("CanViewSales", policy =>
+        policy.RequireRole("Admin", "Manager", "Cashier"));
+    options.AddPolicy("CanManageCategories", policy =>
+        policy.RequireRole("Admin", "Manager"));
+});
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+             // Configure the HTTP request pipeline.
+             if (app.Environment.IsDevelopment())
+             {
+                 // Swagger middleware removed for Postman usage
+             }
 
-// Add exception handling middleware first to catch all exceptions
-app.UseExceptionMiddleware();
+             // Add request body buffering middleware first to ensure stream can be read multiple times
+             app.UseRequestBodyBufferingMiddleware();
 
-// Add security middleware in the correct order
-app.UseSecurityHeadersMiddleware(); // Add security headers
-app.UseAntiForgeryMiddleware(); // Anti-forgery protection
-app.UseRequestSizeLimitingMiddleware(10 * 1024 * 1024); // Request size limiting (10MB)
-app.UseMiddleware<RateLimitingMiddleware>(100, TimeSpan.FromMinutes(1)); // Rate limiting
-app.UseRequestValidationMiddleware(); // Request validation
-app.UseApiKeyAuthenticationMiddleware(app.Configuration); // API key authentication
-app.UseSecurityAuditMiddleware(); // Security audit logging
+             // Add exception handling middleware to catch all exceptions
+             app.UseExceptionMiddleware();
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
+             app.UseHttpsRedirection();
+             app.UseStaticFiles();
 
-// Use CORS (should be before authentication)
-app.UseCors();
+             // Use CORS (should be before authentication)
+             app.UseCors();
 
-// Add authentication and authorization middleware
-app.UseAuthentication();
-app.UseAuthorization();
+             // Add security middleware in the correct order
+             app.UseSecurityHeadersMiddleware(); // Add security headers
+             app.UseAntiForgeryMiddleware(); // Anti-forgery protection
+             app.UseRequestSizeLimitingMiddleware(10 * 1024 * 1024); // Request size limiting (10MB)
+             app.UseMiddleware<PosSystem.Api.Security.RateLimitingMiddleware>(100, TimeSpan.FromMinutes(1)); // Rate limiting
+             app.UseRequestValidationMiddleware(); // Request validation
+             
+             // Use API key authentication middleware before JWT authentication
+             app.UseApiKeyAuthenticationMiddleware(builder.Configuration);
+             // Use JWT authentication
+             app.UseAuthentication();
+             
+             // Use authorization
+             app.UseAuthorization();
+             
+             // Add security audit logging after authentication/authorization
+             app.UseSecurityAuditMiddleware(); // Security audit logging
 
-// Map controllers
-app.MapControllers();
-
-// Seed default roles
-await SeedService.SeedDefaultRoles(app.Services);
-
-app.Run();
+             // Map controllers
+             app.MapControllers();
+             
+             // Add route to handle incorrect image paths (redirect /api/product/images/ to /images/)
+             app.MapGet("/api/product/images/products/{*path}", (string path) =>
+                 Results.Redirect($"/images/products/{path}")).AllowAnonymous();
+             
+             // Apply pending migrations
+             using (var scope = app.Services.CreateScope())
+             {
+                 var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+                 await context.Database.MigrateAsync();
+                 
+                 // Ensure product images directory exists
+                 var webHostEnvironment = scope.ServiceProvider.GetRequiredService<IWebHostEnvironment>();
+                 var imagesPath = Path.Combine(webHostEnvironment.WebRootPath, "images", "products");
+                 if (!Directory.Exists(imagesPath))
+                 {
+                     Directory.CreateDirectory(imagesPath);
+                 }
+             }
+             
+             
+             app.Run();

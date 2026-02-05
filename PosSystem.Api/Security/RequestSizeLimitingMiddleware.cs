@@ -32,52 +32,67 @@ namespace PosSystem.Api.Security
                 return;
             }
 
-            // For chunked requests or when Content-Length is not specified, 
-            // we'll wrap the request body stream to monitor its size
-            if (context.Request.Body.CanRead)
-            {
-                var originalBody = context.Request.Body;
-                
-                try
-                {
-                    // Enable buffering to allow multiple reads
-                    context.Request.EnableBuffering();
-                    
-                    // Check if we need to wrap the stream for size monitoring
-                    if (context.Request.ContentLength == null)
-                    {
-                        var monitoredStream = new SizeLimitingStream(originalBody, _maxRequestBodySize);
-                        context.Request.Body = monitoredStream;
-                    }
-                    
-                    await _next(context);
-                    
-                    // Check if the stream exceeded the limit during processing
-                    if (context.Request.Body is SizeLimitingStream sizeStream && sizeStream.IsSizeExceeded)
-                    {
-                        context.Response.StatusCode = 413; // Request Entity Too Large
-                        context.Response.ContentType = "application/json";
-                        
-                        var response = new
-                        {
-                            error = "Request too large",
-                            message = $"Request body exceeds the maximum allowed size of {_maxRequestBodySize / (1024 * 1024)} MB"
-                        };
-                        
-                        await context.Response.WriteAsync(JsonSerializer.Serialize(response));
-                        return;
-                    }
-                }
-                finally
-                {
-                    // Restore original body stream
-                    context.Request.Body = originalBody;
-                }
-            }
-            else
-            {
-                await _next(context);
-            }
+              // For chunked requests or when Content-Length is not specified, 
+              // we'll wrap the request body stream to monitor its size
+              if (context.Request.Body.CanRead)
+              {
+                  var originalBody = context.Request.Body;
+                  
+                  try
+                  {
+                      // Check if we need to wrap the stream for size monitoring
+                      if (context.Request.ContentLength == null)
+                      {
+                          var monitoredStream = new SizeLimitingStream(originalBody, _maxRequestBodySize);
+                          context.Request.Body = monitoredStream;
+                      }
+                      else
+                      {
+                          // If Content-Length is specified, check it first before proceeding
+                          if (context.Request.ContentLength > _maxRequestBodySize)
+                          {
+                              context.Response.StatusCode = 413; // Request Entity Too Large
+                              context.Response.ContentType = "application/json";
+                              
+                              var response = new
+                              {
+                                  error = "Request too large",
+                                  message = $"Request body exceeds the maximum allowed size of {_maxRequestBodySize / (1024 * 1024)} MB"
+                              };
+                              
+                              await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                              return;
+                          }
+                      }
+                      
+                      await _next(context);
+                      
+                      // Check if the stream exceeded the limit during processing
+                      if (context.Request.Body is SizeLimitingStream sizeStream && sizeStream.IsSizeExceeded)
+                      {
+                          context.Response.StatusCode = 413; // Request Entity Too Large
+                          context.Response.ContentType = "application/json";
+                          
+                          var response = new
+                          {
+                              error = "Request too large",
+                              message = $"Request body exceeds the maximum allowed size of {_maxRequestBodySize / (1024 * 1024)} MB"
+                          };
+                          
+                          await context.Response.WriteAsync(JsonSerializer.Serialize(response));
+                          return;
+                      }
+                  }
+                  finally
+                  {
+                      // Restore original body stream
+                      context.Request.Body = originalBody;
+                  }
+              }
+             else
+             {
+                 await _next(context);
+             }
         }
     }
 

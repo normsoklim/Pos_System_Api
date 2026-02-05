@@ -9,11 +9,13 @@ namespace PosSystem.Application.Services
     {
         private readonly IProductRepository _repo;
         private readonly ICategoryRepository _categoryRepository;
+        private readonly IFileService _fileService;
 
-        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository)
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IFileService fileService)
         {
             _repo = productRepository;
             _categoryRepository = categoryRepository;
+            _fileService = fileService;
         }
         
         public async Task<List<ProductDto>> GetAllAsync()
@@ -25,8 +27,7 @@ namespace PosSystem.Application.Services
                 Id = p.Id,
                 ProductName = p.ProductName,
                 Barcode = p.Barcode,
-                Cost = p.Cost,
-                SellPrice = p.Cost * 1.2m, // Assuming a 20% markup for SellPrice
+                Price = p.Price,
                 QtyInStock = p.QtyInStock,
                 Description = p.Description,
                 ImageUrl = p.ImageUrl,
@@ -44,8 +45,7 @@ namespace PosSystem.Application.Services
                 Id = product.Id,
                 ProductName = product.ProductName,
                 Barcode = product.Barcode,
-                Cost = product.Cost,
-                SellPrice = product.Cost * 1.2m, // Assuming a 20% markup for SellPrice
+                Price = product.Price,
                 QtyInStock = product.QtyInStock,
                 Description = product.Description,
                 ImageUrl = product.ImageUrl,
@@ -71,8 +71,7 @@ namespace PosSystem.Application.Services
                 Id = Guid.NewGuid(),
                 ProductName = dto.ProductName,
                 Barcode = dto.Barcode,
-                Cost = dto.Cost,
-                SellPrice = dto.Cost * 1.2m,
+                Price = dto.Price,
                 QtyInStock = dto.QtyInStock,
                 Description = dto.Description,
                 ImageUrl = dto.ImageUrl,
@@ -86,6 +85,13 @@ namespace PosSystem.Application.Services
         {
             var existingProduct = await _repo.GetByIdAsync(id)
                 ?? throw new Exception("Product not found");
+
+            // Store the old image URL to delete it later if a new image is provided
+            string? oldImageUrl = null;
+            if (!string.IsNullOrEmpty(existingProduct.ImageUrl) && !string.IsNullOrEmpty(dto.ImageUrl) && existingProduct.ImageUrl != dto.ImageUrl)
+            {
+                oldImageUrl = existingProduct.ImageUrl;
+            }
 
             // Only validate and update CategoryId if it's provided (not null)
             if (dto.CategoryId.HasValue && dto.CategoryId.Value != Guid.Empty)
@@ -102,19 +108,31 @@ namespace PosSystem.Application.Services
 
             existingProduct.ProductName = dto.ProductName;
             existingProduct.Barcode = dto.Barcode;
-            existingProduct.Cost = dto.Cost;
-            existingProduct.SellPrice = dto.Cost * 1.2m;
+            existingProduct.Price = dto.Price;
             existingProduct.QtyInStock = dto.QtyInStock;
             existingProduct.Description = dto.Description;
             existingProduct.ImageUrl = dto.ImageUrl;
 
             await _repo.UpdateAsync(existingProduct);
+
+            // Delete the old image file if a new image was provided
+            if (!string.IsNullOrEmpty(oldImageUrl))
+            {
+                await _fileService.DeleteFileAsync(oldImageUrl);
+            }
         }
 
         public async Task UpdatePartialAsync(Guid id, UpdateProductPartialDto dto)
         {
             var existingProduct = await _repo.GetByIdAsync(id)
                 ?? throw new Exception("Product not found");
+
+            // Store the old image URL to delete it later if a new image is provided
+            string? oldImageUrl = null;
+            if (!string.IsNullOrEmpty(existingProduct.ImageUrl) && dto.ImageUrl != null && existingProduct.ImageUrl != dto.ImageUrl)
+            {
+                oldImageUrl = existingProduct.ImageUrl;
+            }
 
             // Only update fields that are provided in the DTO
             if (!string.IsNullOrEmpty(dto.ProductName))
@@ -123,11 +141,10 @@ namespace PosSystem.Application.Services
             if (!string.IsNullOrEmpty(dto.Barcode))
                 existingProduct.Barcode = dto.Barcode;
                 
-            if (dto.Cost.HasValue)
+            if (dto.Price.HasValue)
             {
-                existingProduct.Cost = dto.Cost.Value;
-                // Update SellPrice based on Cost (assuming 20% markup)
-                existingProduct.SellPrice = dto.Cost.Value * 1.2m;
+                existingProduct.Price = dto.Price.Value;
+
             }
                 
             if (dto.QtyInStock.HasValue)
@@ -154,6 +171,12 @@ namespace PosSystem.Application.Services
             }
 
             await _repo.UpdateAsync(existingProduct);
+
+            // Delete the old image file if a new image was provided
+            if (!string.IsNullOrEmpty(oldImageUrl))
+            {
+                await _fileService.DeleteFileAsync(oldImageUrl);
+            }
         }
 
         public async Task DeleteAsync(Guid id)

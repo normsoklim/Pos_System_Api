@@ -18,21 +18,21 @@ public class AppDbContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
         
-        // Configure UserRole as a junction table
-        modelBuilder.Entity<UserRole>(entity =>
-        {
-            entity.HasKey(ur => new { ur.UserId, ur.RoleId });
+        // Configure relationships
+        modelBuilder.Entity<UserRole>()
+            .HasKey(ur => ur.Id);
+        
+        modelBuilder.Entity<UserRole>()
+            .HasOne(ur => ur.User)
+            .WithMany(u => u.UserRoles)
+            .HasForeignKey(ur => ur.UserId)
+            .OnDelete(DeleteBehavior.Cascade);
             
-            entity.HasOne(ur => ur.User)
-                .WithMany(u => u.UserRoles)
-                .HasForeignKey(ur => ur.UserId)
-                .OnDelete(DeleteBehavior.Cascade);
-                
-            entity.HasOne(ur => ur.Role)
-                .WithMany(r => r.UserRoles)
-                .HasForeignKey(ur => ur.RoleId)
-                .OnDelete(DeleteBehavior.Cascade);
-        });
+        modelBuilder.Entity<UserRole>()
+            .HasOne(ur => ur.Role)
+            .WithMany(r => r.UserRoles)
+            .HasForeignKey(ur => ur.RoleId)
+            .OnDelete(DeleteBehavior.Cascade);
         
         base.OnModelCreating(modelBuilder);
     }

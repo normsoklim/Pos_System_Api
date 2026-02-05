@@ -19,31 +19,31 @@ namespace PosSystem.Api.Security
                 // Prevent MIME type sniffing
                 if (!context.Response.Headers.ContainsKey("X-Content-Type-Options"))
                 {
-                    context.Response.Headers.Add("X-Content-Type-Options", "nosniff");
+                    context.Response.Headers.Append("X-Content-Type-Options", "nosniff");
                 }
 
                 // Prevent clickjacking
                 if (!context.Response.Headers.ContainsKey("X-Frame-Options"))
                 {
-                    context.Response.Headers.Add("X-Frame-Options", "DENY");
+                    context.Response.Headers.Append("X-Frame-Options", "DENY");
                 }
 
                 // Enable XSS protection in browsers
                 if (!context.Response.Headers.ContainsKey("X-XSS-Protection"))
                 {
-                    context.Response.Headers.Add("X-XSS-Protection", "1; mode=block");
+                    context.Response.Headers.Append("X-XSS-Protection", "1; mode=block");
                 }
 
                 // Prevent content-type sniffing for scripts
                 if (!context.Response.Headers.ContainsKey("X-Permitted-Cross-Domain-Policies"))
                 {
-                    context.Response.Headers.Add("X-Permitted-Cross-Domain-Policies", "none");
+                    context.Response.Headers.Append("X-Permitted-Cross-Domain-Policies", "none");
                 }
 
                 // Set Content Security Policy
                 if (!context.Response.Headers.ContainsKey("Content-Security-Policy"))
                 {
-                    context.Response.Headers.Add("Content-Security-Policy", 
+                    context.Response.Headers.Append("Content-Security-Policy",
                         "default-src 'self'; " +
                         "script-src 'self' 'unsafe-inline' 'unsafe-eval'; " +
                         "style-src 'self' 'unsafe-inline'; " +
@@ -58,20 +58,20 @@ namespace PosSystem.Api.Security
                 // Strict Transport Security (HSTS) - only if HTTPS is available
                 if (!context.Response.Headers.ContainsKey("Strict-Transport-Security") && context.Request.IsHttps)
                 {
-                    context.Response.Headers.Add("Strict-Transport-Security", 
+                    context.Response.Headers.Append("Strict-Transport-Security",
                         "max-age=31536000; includeSubDomains; preload");
                 }
 
                 // Referrer Policy
                 if (!context.Response.Headers.ContainsKey("Referrer-Policy"))
                 {
-                    context.Response.Headers.Add("Referrer-Policy", "no-referrer-when-downgrade");
+                    context.Response.Headers.Append("Referrer-Policy", "no-referrer-when-downgrade");
                 }
 
                 // Feature Policy (now called Permissions Policy)
                 if (!context.Response.Headers.ContainsKey("Permissions-Policy"))
                 {
-                    context.Response.Headers.Add("Permissions-Policy", 
+                    context.Response.Headers.Append("Permissions-Policy",
                         "geolocation=(), microphone=(), camera=()");
                 }
 

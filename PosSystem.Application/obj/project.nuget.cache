@@ -1,12 +1,14 @@
 {
   "version": 2,
-  "dgSpecHash": "qHZCihK9Lig=",
+  "dgSpecHash": "ujr7hgSJUqQ=",
   "success": true,
-  "projectFilePath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Application\\PosSystem.Application.csproj",
+  "projectFilePath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Application\\PosSystem.Application.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\MSI-PC\\.nuget\\packages\\bcrypt.net-next\\4.0.3\\bcrypt.net-next.4.0.3.nupkg.sha512",
-    "C:\\Users\\MSI-PC\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\10.0.2\\microsoft.extensions.configuration.abstractions.10.0.2.nupkg.sha512",
-    "C:\\Users\\MSI-PC\\.nuget\\packages\\microsoft.extensions.primitives\\10.0.2\\microsoft.extensions.primitives.10.0.2.nupkg.sha512",
+    "C:\\Users\\MSI-PC\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\8.0.0\\microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\MSI-PC\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\MSI-PC\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\8.0.0\\microsoft.extensions.logging.abstractions.8.0.0.nupkg.sha512",
+    "C:\\Users\\MSI-PC\\.nuget\\packages\\microsoft.extensions.primitives\\8.0.0\\microsoft.extensions.primitives.8.0.0.nupkg.sha512",
     "C:\\Users\\MSI-PC\\.nuget\\packages\\microsoft.identitymodel.abstractions\\7.1.2\\microsoft.identitymodel.abstractions.7.1.2.nupkg.sha512",
     "C:\\Users\\MSI-PC\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\7.1.2\\microsoft.identitymodel.jsonwebtokens.7.1.2.nupkg.sha512",
     "C:\\Users\\MSI-PC\\.nuget\\packages\\microsoft.identitymodel.logging\\7.1.2\\microsoft.identitymodel.logging.7.1.2.nupkg.sha512",

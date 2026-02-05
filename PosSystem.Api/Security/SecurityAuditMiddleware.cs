@@ -31,17 +31,23 @@ namespace PosSystem.Api.Security
 
             try
             {
+                // Continue with the request pipeline
                 await _next(context);
 
+                // Log the request after authentication/authorization has been processed
+                var userId = GetUserId(context);
+                var isAuthenticated = context.User?.Identity?.IsAuthenticated == true;
+                
                 // Log successful requests
                 if (context.Response.StatusCode < 400)
                 {
                     _logger.LogInformation(
-                        "SECURITY_AUDIT: Successful request - IP: {ClientIp}, Method: {Method}, Path: {Path}, User: {UserId}, Status: {StatusCode}, Duration: {Duration}ms",
+                        "SECURITY_AUDIT: Successful request - IP: {ClientIp}, Method: {Method}, Path: {Path}, User: {UserId}, Authenticated: {IsAuthenticated}, Status: {StatusCode}, Duration: {Duration}ms",
                         clientIp,
                         method,
                         path,
-                        GetUserId(context),
+                        userId,
+                        isAuthenticated,
                         context.Response.StatusCode,
                         (DateTime.UtcNow - requestTime).TotalMilliseconds
                     );
@@ -50,11 +56,12 @@ namespace PosSystem.Api.Security
                 {
                     // Log potentially suspicious requests
                     _logger.LogWarning(
-                        "SECURITY_AUDIT: Request with error - IP: {ClientIp}, Method: {Method}, Path: {Path}, User: {UserId}, Status: {StatusCode}, Duration: {Duration}ms",
+                        "SECURITY_AUDIT: Request with error - IP: {ClientIp}, Method: {Method}, Path: {Path}, User: {UserId}, Authenticated: {IsAuthenticated}, Status: {StatusCode}, Duration: {Duration}ms",
                         clientIp,
                         method,
                         path,
-                        GetUserId(context),
+                        userId,
+                        isAuthenticated,
                         context.Response.StatusCode,
                         (DateTime.UtcNow - requestTime).TotalMilliseconds
                     );
@@ -63,13 +70,17 @@ namespace PosSystem.Api.Security
             catch (Exception ex)
             {
                 // Log exceptions
+                var userId = GetUserId(context);
+                var isAuthenticated = context.User?.Identity?.IsAuthenticated == true;
+                
                 _logger.LogError(
                     ex,
-                    "SECURITY_AUDIT: Exception occurred - IP: {ClientIp}, Method: {Method}, Path: {Path}, User: {UserId}, Exception: {ExceptionMessage}",
+                    "SECURITY_AUDIT: Exception occurred - IP: {ClientIp}, Method: {Method}, Path: {Path}, User: {UserId}, Authenticated: {IsAuthenticated}, Exception: {ExceptionMessage}",
                     clientIp,
                     method,
                     path,
-                    GetUserId(context),
+                    userId,
+                    isAuthenticated,
                     ex.Message
                 );
 
@@ -77,7 +88,12 @@ namespace PosSystem.Api.Security
             }
             finally
             {
+                // Reset the response body stream position to the beginning
+                responseBody.Seek(0, SeekOrigin.Begin);
+                // Copy the response body from memory stream back to the original stream
                 await responseBody.CopyToAsync(originalBodyStream);
+                // Reset the response body stream to the original stream
+                context.Response.Body = originalBodyStream;
             }
         }
 
@@ -104,20 +120,21 @@ namespace PosSystem.Api.Security
         {
             if (context.User?.Identity?.IsAuthenticated == true)
             {
-                var userId = context.User.FindFirst("nameid")?.Value;
+                var userId = context.User.FindFirst("name")?.Value;
                 if (!string.IsNullOrEmpty(userId))
                 {
                     return userId;
                 }
-
-                var username = context.User.FindFirst("unique_name")?.Value;
-                if (!string.IsNullOrEmpty(username))
+                
+                var nameIdentifier = context.User.FindFirst("nameidentifier")?.Value;
+                if (!string.IsNullOrEmpty(nameIdentifier))
                 {
-                    return username;
+                    return nameIdentifier;
                 }
             }
-
+            
             return "anonymous";
         }
+        
     }
 }

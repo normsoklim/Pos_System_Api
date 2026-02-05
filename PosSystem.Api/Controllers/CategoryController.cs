@@ -31,7 +31,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPost]
-    [Authorize(Policy = "ManageCategories")]
+    [Authorize(Policy = "CanCreateProduct")]
     public async Task<IActionResult> Create(CreateCategoryDto dto)
     {
         await _service.CreateAsync(dto);
@@ -39,7 +39,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    [Authorize(Policy = "ManageCategories")]
+    [Authorize(Policy = "CanUpdateProduct")]
     public async Task<IActionResult> Update(Guid id, UpdateCategoryDto dto)
     {
         await _service.UpdateAsync(id, dto);
@@ -47,7 +47,7 @@ public class CategoryController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = "ManageCategories")]
+    [Authorize(Policy = "CanDeleteProduct")]
     public async Task<IActionResult> Delete(Guid id)
     {
         await _service.DeleteAsync(id);
