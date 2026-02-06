@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>PosSystem.Api</name>
+    </assembly>
+    <members>
+        <member name="T:PosSystem.Api.Models.CreateProductModel">
+            <summary>
+            Model for creating a product with an optional image file
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.CreateProductModel.ProductName">
+            <summary>
+            Name of the product
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.CreateProductModel.Barcode">
+            <summary>
+            Barcode of the product
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.CreateProductModel.Price">
+            <summary>
+            Price of the product
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.CreateProductModel.QtyInStock">
+            <summary>
+            Quantity in stock
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.CreateProductModel.Description">
+            <summary>
+            Description of the product
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.CreateProductModel.ImageFile">
+            <summary>
+            Image file to upload (optional if ImageUrl is provided)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.CreateProductModel.ImageUrl">
+            <summary>
+            URL of the image (optional if ImageFile is provided)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.CreateProductModel.CategoryId">
+            <summary>
+            Category ID for the product
+            </summary>
+        </member>
+        <member name="T:PosSystem.Api.Models.UpdateProductModel">
+            <summary>
+            Model for fully updating a product with an optional image file
+            All required fields must be provided for full updates
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductModel.ProductName">
+            <summary>
+            Name of the product
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductModel.Barcode">
+            <summary>
+            Barcode of the product
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductModel.Price">
+            <summary>
+            Cost of the product
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductModel.QtyInStock">
+            <summary>
+            Quantity in stock
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductModel.Description">
+            <summary>
+            Description of the product
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductModel.ImageFile">
+            <summary>
+            Image file to upload (optional if ImageUrl is provided)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductModel.ImageUrl">
+            <summary>
+            URL of the image (optional if ImageFile is provided)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductModel.CategoryId">
+            <summary>
+            Category ID for the product
+            </summary>
+        </member>
+        <member name="T:PosSystem.Api.Models.UpdateProductPartialModel">
+            <summary>
+            Model for partially updating a product with an optional image file
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.ProductName">
+            <summary>
+            Name of the product (optional)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.Barcode">
+            <summary>
+            Barcode of the product (optional)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.Price">
+            <summary>
+            Price of the product (optional)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.QtyInStock">
+            <summary>
+            Quantity in stock (optional)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.Description">
+            <summary>
+            Description of the product (optional)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.ImageFile">
+            <summary>
+            Image file to upload (optional if ImageUrl is provided)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.ImageUrl">
+            <summary>
+            URL of the image (optional if ImageFile is provided)
+            </summary>
+        </member>
+        <member name="P:PosSystem.Api.Models.UpdateProductPartialModel.CategoryId">
+            <summary>
+            Category ID for the product (optional)
+            </summary>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+    </members>
+</doc>

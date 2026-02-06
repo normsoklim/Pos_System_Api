@@ -160,7 +160,6 @@ d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\rjimswa.dswa.cache.json
 d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\rjsmrazor.dswa.cache.json
 d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\rjsmcshtml.dswa.cache.json
 d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\scopedcss\bundle\PosSystem.Api.styles.css
-d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\compressed\g2rzxefkl0-{0}-bz94qwln5c-bz94qwln5c.gz
 d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\staticwebassets.build.json
 d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\staticwebassets.build.json.cache
 d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\staticwebassets.development.json
@@ -170,3 +169,14 @@ d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\PosSystem.Api.dll
 d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\refint\PosSystem.Api.dll
 d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\PosSystem.Api.xml
 d:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\PosSystem.Api.pdb
+d:\Api_C#\Pos_WebApi\PosSystem.Api\bin\Debug\net10.0\appsettings.Development.json
+d:\Api_C#\Pos_WebApi\PosSystem.Api\bin\Debug\net10.0\appsettings.json
+d:\Api_C#\Pos_WebApi\PosSystem.Api\bin\Debug\net10.0\PosSystem.Api.staticwebassets.runtime.json
+d:\Api_C#\Pos_WebApi\PosSystem.Api\bin\Debug\net10.0\PosSystem.Api.staticwebassets.endpoints.json
+D:\Api_C#\Pos_WebApi\PosSystem.Api\bin\Debug\net10.0\PosSystem.Api.deps.json
+D:\Api_C#\Pos_WebApi\PosSystem.Api\bin\Debug\net10.0\PosSystem.Api.runtimeconfig.json
+d:\Api_C#\Pos_WebApi\PosSystem.Api\bin\Debug\net10.0\PosSystem.Api.pdb
+d:\Api_C#\Pos_WebApi\PosSystem.Api\bin\Debug\net10.0\PosSystem.Api.xml
+D:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\PosSyste.45766B93.Up2Date
+D:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\PosSystem.Api.genruntimeconfig.cache
+D:\Api_C#\Pos_WebApi\PosSystem.Api\obj\Debug\net10.0\ref\PosSystem.Api.dll

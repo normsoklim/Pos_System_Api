@@ -47,33 +47,33 @@ public class ProductController : ControllerBase
             return BadRequest(new { message = "Error retrieving product: " + ex.Message });
         }
     }
-    [HttpPost]
-    [Authorize(Policy = "CanCreateProduct")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public async Task<IActionResult> Create([FromForm] CreateProductModel model)
-    {
-        string? finalImageUrl = null;
+     [HttpPost]
+     [Authorize(Policy = "CanCreateProduct")]
+     [ProducesResponseType(StatusCodes.Status200OK)]
+     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+     public async Task<IActionResult> Create([FromForm] CreateProductModel model)
+     {
+         string? finalImageUrl = null;
 
-        // Handle image upload if provided
-        if (model.ImageFile != null && model.ImageFile.Length > 0)
-        {
-            try
-            {
-                // Read file data to byte array
-                using var memoryStream = new MemoryStream();
-                await model.ImageFile.CopyToAsync(memoryStream);
-                var fileData = memoryStream.ToArray();
+         // Handle image upload if provided
+         if (model.ImageFile != null && model.ImageFile.Length > 0)
+         {
+             try
+             {
+                 // Read file data to byte array
+                 using var memoryStream = new MemoryStream();
+                 await model.ImageFile.CopyToAsync(memoryStream);
+                 var fileData = memoryStream.ToArray();
 
-                // Use the file service to save the file
-                finalImageUrl = await _fileService.SaveFileAsync(fileData, model.ImageFile.FileName, "images/products");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (in a real app, use proper logging)
-                // For now, return a generic error to avoid exposing system details
-                return BadRequest("Error uploading image file");
-            }
+                 // Use the file service to save the file
+                 finalImageUrl = await _fileService.SaveFileAsync(fileData, model.ImageFile.FileName, "images/products");
+             }
+             catch (Exception)
+             {
+                 // Log the exception (in a real app, use proper logging)
+                 // For now, return a generic error to avoid exposing system details
+                 return BadRequest("Error uploading image file");
+             }
         }
         else
         {
@@ -108,33 +108,33 @@ public class ProductController : ControllerBase
             return BadRequest(new { message = "Error creating product: " + ex.Message });
         }
     }
-    [Authorize(Policy = "CanUpdateProduct")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<IActionResult> Update(Guid id, [FromForm] UpdateProductModel model)
-    {
-        string? finalImageUrl = null;
+     [Authorize(Policy = "CanUpdateProduct")]
+     [ProducesResponseType(StatusCodes.Status200OK)]
+     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+     [ProducesResponseType(StatusCodes.Status404NotFound)]
+     public async Task<IActionResult> Update(Guid id, [FromForm] UpdateProductModel model)
+     {
+         string? finalImageUrl = null;
 
-        // Handle image upload if provided
-        if (model.ImageFile != null && model.ImageFile.Length > 0)
-        {
-            try
-            {
-                // Read file data to byte array
-                using var memoryStream = new MemoryStream();
-                await model.ImageFile.CopyToAsync(memoryStream);
-                var fileData = memoryStream.ToArray();
+         // Handle image upload if provided
+         if (model.ImageFile != null && model.ImageFile.Length > 0)
+         {
+             try
+             {
+                 // Read file data to byte array
+                 using var memoryStream = new MemoryStream();
+                 await model.ImageFile.CopyToAsync(memoryStream);
+                 var fileData = memoryStream.ToArray();
 
-                // Use the file service to save the file
-                finalImageUrl = await _fileService.SaveFileAsync(fileData, model.ImageFile.FileName, "images/products");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (in a real app, use proper logging)
-                // For now, return a generic error to avoid exposing system details
-                return BadRequest("Error uploading image file");
-            }
+                 // Use the file service to save the file
+                 finalImageUrl = await _fileService.SaveFileAsync(fileData, model.ImageFile.FileName, "images/products");
+             }
+             catch (Exception)
+             {
+                 // Log the exception (in a real app, use proper logging)
+                 // For now, return a generic error to avoid exposing system details
+                 return BadRequest("Error uploading image file");
+             }
         }
         else
         {
@@ -183,12 +183,12 @@ public class ProductController : ControllerBase
         // Check content type to determine how to process the request
         if (Request.ContentType?.StartsWith("application/json") == true)
         {
-            // Handle JSON request
-            var dto = await System.Text.Json.JsonSerializer.DeserializeAsync<UpdateProductPartialDto>(Request.Body);
-            try
-            {
-                await _service.UpdatePartialAsync(id, dto);
-                return Ok(new { message = "Product updated successfully" });
+             // Handle JSON request
+             var dto = await System.Text.Json.JsonSerializer.DeserializeAsync<UpdateProductPartialDto>(Request.Body);
+             try
+             {
+                 await _service.UpdatePartialAsync(id, dto!);
+                 return Ok(new { message = "Product updated successfully" });
             }
             catch (KeyNotFoundException)
             {
@@ -229,25 +229,25 @@ public class ProductController : ControllerBase
     {
         string? finalImageUrl = null;
 
-        // Handle image upload if provided
-        if (model.ImageFile != null && model.ImageFile.Length > 0)
-        {
-            try
-            {
-                // Read file data to byte array
-                using var memoryStream = new MemoryStream();
-                await model.ImageFile.CopyToAsync(memoryStream);
-                var fileData = memoryStream.ToArray();
+         // Handle image upload if provided
+         if (model.ImageFile != null && model.ImageFile.Length > 0)
+         {
+             try
+             {
+                 // Read file data to byte array
+                 using var memoryStream = new MemoryStream();
+                 await model.ImageFile.CopyToAsync(memoryStream);
+                 var fileData = memoryStream.ToArray();
 
-                // Use the file service to save the file
-                finalImageUrl = await _fileService.SaveFileAsync(fileData, model.ImageFile.FileName, "images/products");
-            }
-            catch (Exception ex)
-            {
-                // Log the exception (in a real app, use proper logging)
-                // For now, return a generic error to avoid exposing system details
-                return BadRequest("Error uploading image file");
-            }
+                 // Use the file service to save the file
+                 finalImageUrl = await _fileService.SaveFileAsync(fileData, model.ImageFile.FileName, "images/products");
+             }
+             catch (Exception)
+             {
+                 // Log the exception (in a real app, use proper logging)
+                 // For now, return a generic error to avoid exposing system details
+                 return BadRequest("Error uploading image file");
+             }
         }
         else
         {

@@ -2506,11 +2506,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Api\\PosSystem.Api.csproj",
+      "projectUniqueName": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Api\\PosSystem.Api.csproj",
       "projectName": "PosSystem.Api",
-      "projectPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Api\\PosSystem.Api.csproj",
+      "projectPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Api\\PosSystem.Api.csproj",
       "packagesPath": "C:\\Users\\MSI-PC\\.nuget\\packages\\",
-      "outputPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Api\\obj\\",
+      "outputPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Api\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
@@ -2531,11 +2531,11 @@
         "net10.0": {
           "targetAlias": "net10.0",
           "projectReferences": {
-            "d:\\Api_C#\\Pos_WebApi\\PosSystem.Application\\PosSystem.Application.csproj": {
-              "projectPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Application\\PosSystem.Application.csproj"
+            "D:\\Api_C#\\Pos_WebApi\\PosSystem.Application\\PosSystem.Application.csproj": {
+              "projectPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Application\\PosSystem.Application.csproj"
             },
-            "d:\\Api_C#\\Pos_WebApi\\PosSystem.Domain\\PosSystem.Domain.csproj": {
-              "projectPath": "d:\\Api_C#\\Pos_WebApi\\PosSystem.Domain\\PosSystem.Domain.csproj"
+            "D:\\Api_C#\\Pos_WebApi\\PosSystem.Domain\\PosSystem.Domain.csproj": {
+              "projectPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Domain\\PosSystem.Domain.csproj"
             },
             "D:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj": {
               "projectPath": "D:\\Api_C#\\Pos_WebApi\\PosSystem.Infrastructure\\PosSystem.Infrastructure.csproj"

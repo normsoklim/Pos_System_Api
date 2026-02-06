@@ -12,7 +12,7 @@ namespace PosSystem.Api.Security
     {
         Task<string> GenerateToken(User user);
         Task<bool> ValidateToken(string token);
-        ClaimsPrincipal GetPrincipalFromToken(string token);
+         ClaimsPrincipal? GetPrincipalFromToken(string token);
     }
 
     public class JwtTokenService : IJwtTokenService
