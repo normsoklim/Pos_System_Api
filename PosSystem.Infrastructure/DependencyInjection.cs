@@ -4,6 +4,7 @@ using PosSystem.Application.Interfaces.Services;
 using PosSystem.Application.Services;
 using PosSystem.Infrastructure.Persistence.Repositories;
 using PosSystem.Application.Security;
+using PosSystem.Application.interfaces.Services;
 
 
 namespace Microsoft.Extensions.DependencyInjection
@@ -17,6 +18,21 @@ namespace Microsoft.Extensions.DependencyInjection
             
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IProductService, ProductService>();
+            
+            // Customer services
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<ICustomerService, CustomerService>();
+
+            // Stock services
+            services.AddScoped<IStockRepository, StockRepository>();
+            services.AddScoped<IStockService, StockService>();
+            
+            // ProductStock service
+            services.AddScoped<PosSystem.Infrastructure.Services.ProductStockService>();
+            
+            // Sale services
+            services.AddScoped<ISaleRepository, SaleRepository>();
+            services.AddScoped<ISaleService, SaleService>();
             
             // Authentication services
             services.AddScoped<IUserRepository, UserRepository>();

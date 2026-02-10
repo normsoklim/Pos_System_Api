@@ -95,6 +95,12 @@ builder.Services.AddAuthorization(options =>
         policy.RequireRole("Admin", "Manager"));
     options.AddPolicy("CanDeleteProduct", policy =>
         policy.RequireRole("Admin"));
+    options.AddPolicy("CanCreateCustomer", policy =>
+        policy.RequireRole("Admin", "Manager"));
+    options.AddPolicy("CanUpdateCustomer", policy =>
+        policy.RequireRole("Admin", "Manager"));
+    options.AddPolicy("CanDeleteCustomer", policy =>
+        policy.RequireRole("Admin"));
     options.AddPolicy("CanSell", policy =>
         policy.RequireRole("Admin", "Cashier"));
     options.AddPolicy("CanManageUsers", policy =>

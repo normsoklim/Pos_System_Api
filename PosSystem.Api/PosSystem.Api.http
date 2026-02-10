@@ -1,6 +1,97 @@
-@PosSystem.Api_HostAddress = http://localhost:5055
+@host = http://localhost:5055
+@token = 
+@saleId = 
+@customerId = 
+@productId = 
 
-GET {{PosSystem.Api_HostAddress}}/weatherforecast/
-Accept: application/json
+### Register a new user
+POST {{host}}/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "testcashier",
+  "email": "cashier@example.com",
+  "password": "Test@1234",
+  "firstName": "Test",
+  "lastName": "Cashier",
+  "role": "Cashier"
+}
 
 ###
+
+### Login to get JWT token
+POST {{host}}/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "testcashier",
+  "password": "Test@1234"
+}
+
+###
+
+### Get all products (to use for sale)
+GET {{host}}/api/product
+Authorization: Bearer {{token}}
+
+###
+
+### Get all customers (to use for sale)
+GET {{host}}/api/customer
+Authorization: Bearer {{token}}
+
+###
+
+### Create a sale
+POST {{host}}/api/sales
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-API-Key: your-api-key-here
+
+{
+  "customerId": "{{customerId}}",
+  "discount": 0,
+  "tax": 0,
+  "paymentMethod": "Cash",
+  "notes": "Test sale transaction",
+  "saleItems": [
+    {
+      "productId": "{{productId}}",
+      "quantity": 2
+      // unitPrice is optional - system will fetch from product
+    }
+  ]
+}
+
+###
+
+### Get all sales
+GET {{host}}/api/sales
+Authorization: Bearer {{token}}
+X-API-Key: your-api-key-here
+
+###
+
+### Get a specific sale by ID
+GET {{host}}/api/sales/{{saleId}}
+Authorization: Bearer {{token}}
+X-API-Key: your-api-key-here
+
+###
+
+### Update sale status
+PUT {{host}}/api/sales/{{saleId}}/status
+Content-Type: application/json
+Authorization: Bearer {{token}}
+X-API-Key: your-api-key-here
+
+{
+  "status": "Completed"
+}
+
+###
+
+### Delete a sale
+DELETE {{host}}/api/sales/{{saleId}}
+Authorization: Bearer {{token}}
+X-API-Key: your-api-key-here

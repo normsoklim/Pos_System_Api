@@ -6,7 +6,7 @@ namespace PosSystem.Application.Interfaces.Services;
 
 public interface ICustomerService
 {
-    Task<List<CustomerDto>> GetAllAdsync();
+    Task<List<CustomerDto>> GetAllAsync();
     Task<CustomerDto> GetByIdAsync(Guid id);
     Task CreateAsync(CreateCustomerDto dto);
     Task UpdateAsync(Guid id, UpdateCustomerDto dto);

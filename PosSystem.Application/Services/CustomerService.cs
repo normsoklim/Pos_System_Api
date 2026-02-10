@@ -16,10 +16,10 @@ public class CustomerService : ICustomerService
     }
 
 
-    public async Task<List<CustomerDto>> GetAllAdsync()
+    public async Task<List<CustomerDto>> GetAllAsync()
     {
-        var customeries = await _repo.GetAllAsync();
-        return customeries.Select(c => new CustomerDto
+        var customers = await _repo.GetAllAsync();
+        return customers.Select(c => new CustomerDto
         {
             Id = c.Id,
             CustomerName = c.CustomerName,

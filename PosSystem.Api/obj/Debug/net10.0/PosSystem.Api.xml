@@ -4,6 +4,26 @@
         <name>PosSystem.Api</name>
     </assembly>
     <members>
+        <member name="M:PosSystem.Api.Controllers.ProductStockController.GetAllProductsWithStock">
+            <summary>
+            Gets all products with their corresponding stock information
+            </summary>
+        </member>
+        <member name="M:PosSystem.Api.Controllers.ProductStockController.GetProductWithStock(System.Guid)">
+            <summary>
+            Gets a specific product with its stock information
+            </summary>
+        </member>
+        <member name="M:PosSystem.Api.Controllers.ProductStockController.SynchronizeProductAndStockQuantities">
+            <summary>
+            Synchronizes the QtyInStock in Product table with the Quantity in Stock table
+            </summary>
+        </member>
+        <member name="M:PosSystem.Api.Controllers.ProductStockController.UpdateStockAndSyncProduct(System.Guid,PosSystem.Api.Controllers.UpdateStockAndSyncDto)">
+            <summary>
+            Updates stock and automatically synchronizes with Product table
+            </summary>
+        </member>
         <member name="T:PosSystem.Api.Models.CreateProductModel">
             <summary>
             Model for creating a product with an optional image file

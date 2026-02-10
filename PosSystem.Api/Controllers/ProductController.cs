@@ -304,7 +304,7 @@ public class ProductController : ControllerBase
         {
             return NotFound(new { message = "Product not found" });
         }
-        catch (Exception ex)
+        catch (Exception)
         {
             // Log the exception (in a real app, use proper logging)
             return BadRequest(new { message = "Error deleting product" });

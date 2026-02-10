@@ -2,6 +2,7 @@
 using PosSystem.Application.DTOs.Product;
 using PosSystem.Application.Interfaces.Repositories;
 using PosSystem.Application.Interfaces.Services;
+using PosSystem.Domain.Entities;
 
 namespace PosSystem.Application.Services
 {
@@ -10,12 +11,14 @@ namespace PosSystem.Application.Services
         private readonly IProductRepository _repo;
         private readonly ICategoryRepository _categoryRepository;
         private readonly IFileService _fileService;
+        private readonly IStockRepository _stockRepository;
 
-        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IFileService fileService)
+        public ProductService(IProductRepository productRepository, ICategoryRepository categoryRepository, IFileService fileService, IStockRepository stockRepository)
         {
             _repo = productRepository;
             _categoryRepository = categoryRepository;
             _fileService = fileService;
+            _stockRepository = stockRepository;
         }
         
         public async Task<List<ProductDto>> GetAllAsync()
@@ -79,6 +82,18 @@ namespace PosSystem.Application.Services
             };
 
             await _repo.AddAsync(product);
+
+            // Create a corresponding stock record
+            var stock = new Stock
+            {
+                Id = Guid.NewGuid(),
+                ProductId = product.Id,
+                Quantity = product.QtyInStock,
+                CostPrice = 0, // You might want to add cost price to the DTO
+                SellPrice = product.Price,
+                LastUpdated = DateTime.UtcNow
+            };
+            await _stockRepository.CreateAsync(stock);
         }
 
         public async Task UpdateAsync(Guid id, UpdateProductDto dto)
@@ -106,6 +121,9 @@ namespace PosSystem.Application.Services
             }
             // If dto.CategoryId is null, we keep the existing CategoryId
 
+            // Store the original quantity to check if it changed
+            var originalQty = existingProduct.QtyInStock;
+            
             existingProduct.ProductName = dto.ProductName;
             existingProduct.Barcode = dto.Barcode;
             existingProduct.Price = dto.Price;
@@ -114,6 +132,19 @@ namespace PosSystem.Application.Services
             existingProduct.ImageUrl = dto.ImageUrl;
 
             await _repo.UpdateAsync(existingProduct);
+
+            // If quantity changed, update the corresponding stock record
+            if (originalQty != dto.QtyInStock)
+            {
+                var stock = await _stockRepository.GetByProductIdAsync(id);
+                if (stock != null)
+                {
+                    stock.Quantity = dto.QtyInStock;
+                    stock.SellPrice = dto.Price; // Also update the sell price if it changed
+                    stock.LastUpdated = DateTime.UtcNow;
+                    await _stockRepository.UpdateAsync(stock);
+                }
+            }
 
             // Delete the old image file if a new image was provided
             if (!string.IsNullOrEmpty(oldImageUrl))
@@ -134,6 +165,10 @@ namespace PosSystem.Application.Services
                 oldImageUrl = existingProduct.ImageUrl;
             }
 
+            // Store the original quantity to check if it changed
+            var originalQty = existingProduct.QtyInStock;
+            var originalPrice = existingProduct.Price;
+            
             // Only update fields that are provided in the DTO
             if (!string.IsNullOrEmpty(dto.ProductName))
                 existingProduct.ProductName = dto.ProductName;
@@ -172,6 +207,22 @@ namespace PosSystem.Application.Services
 
             await _repo.UpdateAsync(existingProduct);
 
+            // If quantity or price changed, update the corresponding stock record
+            if ((dto.QtyInStock.HasValue && originalQty != dto.QtyInStock.Value) ||
+                (dto.Price.HasValue && originalPrice != dto.Price.Value))
+            {
+                var stock = await _stockRepository.GetByProductIdAsync(id);
+                if (stock != null)
+                {
+                    if (dto.QtyInStock.HasValue)
+                        stock.Quantity = dto.QtyInStock.Value;
+                    if (dto.Price.HasValue)
+                        stock.SellPrice = dto.Price.Value; // Update the sell price if it changed
+                    stock.LastUpdated = DateTime.UtcNow;
+                    await _stockRepository.UpdateAsync(stock);
+                }
+            }
+
             // Delete the old image file if a new image was provided
             if (!string.IsNullOrEmpty(oldImageUrl))
             {
@@ -183,6 +234,13 @@ namespace PosSystem.Application.Services
         {
             var existingProduct = await _repo.GetByIdAsync(id)
                 ?? throw new Exception("Product not found");
+
+            // Delete the corresponding stock record
+            var stock = await _stockRepository.GetByProductIdAsync(id);
+            if (stock != null)
+            {
+                await _stockRepository.DeleteAsync(stock.Id);
+            }
 
             await _repo.DeleteAsync(id);
         }

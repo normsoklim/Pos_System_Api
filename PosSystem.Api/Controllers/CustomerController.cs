@@ -10,7 +10,7 @@ using PosSystem.Domain.Entities;
 namespace PosSystem.Api.Controllers;
 
 [ApiController]
-[Route("api/controller")]
+[Route("api/[controller]")]
 public class CustomerController :ControllerBase
 {
     private readonly ICustomerService _service;
@@ -22,9 +22,9 @@ public class CustomerController :ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetAll()
     {
-        return Ok("All Customeries" + await _service.GetAllAdsync());
+        return Ok(await _service.GetAllAsync());
     }
-    [HttpGet("id")]
+    [HttpGet("{id}")]
     public async Task<ActionResult> GetById(Guid id)
     {
         return Ok(await _service.GetByIdAsync(id));
@@ -34,20 +34,20 @@ public class CustomerController :ControllerBase
     public async Task<ActionResult> Create(CreateCustomerDto dto)
     {
          await _service.CreateAsync(dto);
-         return Ok("Customer create successfully");
+         return Ok(new { message = "Customer create successfully" });
     }
-    [HttpPut("id")]
+    [HttpPut("{id}")]
     [Authorize(Policy = "CanUpdateCustomer")]
     public async Task<ActionResult> Update(Guid id , UpdateCustomerDto dto)
     {
         await _service.UpdateAsync(id, dto);
-        return Ok("Updated customer successfully");
+        return Ok(new { message = "Updated customer successfully" });
     }
-    [HttpDelete]
+    [HttpDelete("{id}")]
     [Authorize(Policy = "CanDeleteCustomer")]
     public async Task<ActionResult> Delete (Guid id)
     {
         await _service.DeleteAsync(id);
-        return Ok("Delete customer successfully");
+        return Ok(new { message = "Delete customer successfully" });
     }
 } 

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using PosSystem.Application.DTOs.Sale;
 using PosSystem.Application.Interfaces.Services;
 
 namespace PosSystem.Api.Controllers
@@ -8,27 +9,52 @@ namespace PosSystem.Api.Controllers
     [Route("api/[controller]")]
     public class SalesController : ControllerBase
     {
-        private readonly IProductService _productService;
+        private readonly ISaleService _saleService;
 
-        public SalesController(IProductService productService)
+        public SalesController(ISaleService saleService)
         {
-            _productService = productService;
+            _saleService = saleService;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetSales()
+        {
+            var sales = await _saleService.GetAllSalesAsync();
+            return Ok(sales);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetSale(Guid id)
+        {
+            var sale = await _saleService.GetSaleByIdAsync(id);
+            if (sale == null)
+                return NotFound();
+
+            return Ok(sale);
         }
 
         [HttpPost]
         [Authorize(Policy = "CanSell")]
-        public async Task<IActionResult> CreateSale()
+        public async Task<IActionResult> CreateSale([FromBody] CreateSaleDto createSaleDto)
         {
-            // Implementation for creating a sale
-            return Ok(new { message = "Sale created successfully" });
+            var sale = await _saleService.CreateSaleAsync(createSaleDto);
+            return CreatedAtAction(nameof(GetSale), new { id = sale.Id }, sale);
         }
 
-        [HttpGet]
-        [Authorize(Policy = "CanViewReports")]
-        public async Task<IActionResult> GetSalesReport()
+        [HttpPut("{id}/status")]
+        [Authorize(Policy = "CanSell")]
+        public async Task<IActionResult> UpdateSaleStatus(Guid id, [FromBody] string status)
         {
-            // Implementation for getting sales reports
-            return Ok(new { message = "Sales report retrieved" });
+            await _saleService.UpdateSaleStatusAsync(id, status);
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        [Authorize(Policy = "CanSell")]
+        public async Task<IActionResult> DeleteSale(Guid id)
+        {
+            await _saleService.DeleteSaleAsync(id);
+            return NoContent();
         }
     }
 }
