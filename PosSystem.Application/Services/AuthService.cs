@@ -98,9 +98,14 @@ namespace PosSystem.Application.Services
                 throw new ArgumentException("Password must be at least 6 characters long");
             }
 
+            // Auto-generate username from first name and last name if not provided
+            var username = string.IsNullOrWhiteSpace(registerDto.Username)
+                ? $"{registerDto.FirstName} {registerDto.LastName}"
+                : registerDto.Username;
+
             var user = new User
             {
-                Username = registerDto.Username,
+                Username = username,
                 Email = registerDto.Email,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(registerDto.Password),
                 FirstName = registerDto.FirstName,

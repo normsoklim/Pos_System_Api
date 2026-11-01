@@ -42,6 +42,9 @@ namespace Microsoft.Extensions.DependencyInjection
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<ISecurityAuditService, SecurityAuditService>();
             
+            // Bakong payment service
+            services.AddScoped<IBakongPaymentService, BakongPaymentService>();
+            
             // Add other service registrations here as needed
             
             return services;

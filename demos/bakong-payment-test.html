@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakong Payment Test Interface</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-right: 10px;
+        }
+        button:hover {
+            background-color: #2980b9;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        .error {
+            color: #e74c3c;
+            margin: 10px 0;
+        }
+        .success {
+            color: #27ae60;
+            margin: 10px 0;
+        }
+        .qr-container {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .qr-code {
+            max-width: 300px;
+            margin: 0 auto;
+        }
+        .hidden {
+            display: none;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 20px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+            background-color: #fafafa;
+        }
+        .section-title {
+            margin-top: 0;
+            color: #2c3e50;
+        }
+        .token-input {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+        }
+        .note {
+            background-color: #e3f2fd;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 10px;
+            border-left: 4px solid #2196f3;
+        }
+        .note ul {
+            margin: 5px 0;
+            padding-left: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bakong Payment Test Interface</h1>
+        
+        <div class="section">
+            <h2 class="section-title">API Configuration</h2>
+            <div class="form-group">
+                <label for="apiUrl">API Base URL:</label>
+                <input type="text" id="apiUrl" value="http://localhost:5055" placeholder="Enter API base URL">
+            </div>
+            <div class="form-group">
+                <label for="authToken">Authorization Token:</label>
+                <input type="text" id="authToken" class="token-input" placeholder="Enter JWT token for authenticated endpoints">
+                <small>Required for endpoints that need authentication (sales creation, payment processing)</small>
+            </div>
+            <div class="note">
+                <strong>Note:</strong> Make sure your API server is running and CORS is configured to allow requests from this origin.
+                If you get errors, check that:
+                <ul>
+                    <li>The API server is running on the specified URL</li>
+                    <li>CORS policy allows requests from file:// or your web server origin</li>
+                    <li>You have a valid JWT token for authenticated endpoints</li>
+                    <li>Authentication is required for POST /api/bakong-payment/generate endpoint</li>
+                </ul>
+                <p><strong>Authentication:</strong> The /generate endpoint requires authentication. Make sure you have a valid JWT token from the login endpoint.</p>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Get Authorization Token</h2>
+            <div class="form-group">
+                <label for="loginUsername">Username:</label>
+                <input type="text" id="loginUsername" placeholder="Enter username">
+            </div>
+            <div class="form-group">
+                <label for="loginPassword">Password:</label>
+                <input type="password" id="loginPassword" placeholder="Enter password">
+            </div>
+            <button onclick="login()">Login</button>
+            <div id="loginResult"></div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Create Sale with Bakong Payment</h2>
+            <div class="form-group">
+                <label for="customerId">Customer ID:</label>
+                <input type="text" id="customerId" value="65e5041e-dc75-45b9-94b1-ee00b0e9b16d" placeholder="Customer GUID">
+            </div>
+            <div class="form-group">
+                <label for="paymentAmount">Amount:</label>
+                <input type="number" id="paymentAmount" value="100.00" step="0.01" min="0.01">
+            </div>
+            <div class="form-group">
+                <label for="paymentMethod">Payment Method:</label>
+                <select id="paymentMethod">
+                    <option value="Cash">Cash</option>
+                    <option value="Bakong KH QR" selected>Bakong KH QR</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="saleNotes">Sale Notes:</label>
+                <input type="text" id="saleNotes" value="Test sale with Bakong payment">
+            </div>
+            <button onclick="createSale()">Create Sale</button>
+            <div id="createSaleResult"></div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Generate Bakong Payment QR Code</h2>
+            <div class="form-group">
+                <label for="qrAmount">Amount:</label>
+                <input type="number" id="qrAmount" value="50.00" step="0.01" min="0.01">
+            </div>
+            <div class="form-group">
+                <label for="qrDescription">Description:</label>
+                <input type="text" id="qrDescription" value="Test Bakong payment">
+            </div>
+            <div class="form-group">
+                <label for="qrReferenceId">Reference ID:</label>
+                <input type="text" id="qrReferenceId" value="test-ref-001">
+            </div>
+            <button onclick="generateBakongQR()">Generate QR Code</button>
+            <div id="qrResult"></div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Process Bakong Payment for Existing Sale</h2>
+            <div class="form-group">
+                <label for="saleId">Sale ID:</label>
+                <input type="text" id="saleId" placeholder="Enter existing sale GUID">
+            </div>
+            <div class="form-group">
+                <label for="paymentDescription">Payment Description:</label>
+                <input type="text" id="paymentDescription" value="Bakong payment for existing sale">
+            </div>
+            <button onclick="processBakongPayment()">Process Bakong Payment</button>
+            <div id="processPaymentResult"></div>
+        </div>
+
+        <div class="section">
+            <h2 class="section-title">Get QR Code Image</h2>
+            <div class="form-group">
+                <label for="qrCodeData">QR Code Data:</label>
+                <input type="text" id="qrCodeData" placeholder="Enter QR code text to generate image">
+            </div>
+            <button onclick="getQRCodeImage()">Get QR Code Image</button>
+            <div id="qrImageResult"></div>
+        </div>
+    </div>
+
+    <script>
+        // Function to get API base URL
+        function getApiUrl() {
+            return document.getElementById('apiUrl').value;
+        }
+
+        // Function to get authorization token
+        function getAuthToken() {
+            return document.getElementById('authToken').value;
+        }
+
+        // Function to show result in a div
+        function showResult(divId, content, isError = false) {
+            const resultDiv = document.getElementById(divId);
+            resultDiv.innerHTML = content;
+            resultDiv.className = isError ? 'error' : 'success';
+        }
+
+        // Function to create a sale
+        async function createSale() {
+            const customerId = document.getElementById('customerId').value;
+            const amount = parseFloat(document.getElementById('paymentAmount').value);
+            const paymentMethod = document.getElementById('paymentMethod').value;
+            const notes = document.getElementById('saleNotes').value;
+
+            if (!customerId) {
+                showResult('createSaleResult', 'Please enter a customer ID', true);
+                return;
+            }
+
+            if (!amount || amount <= 0) {
+                showResult('createSaleResult', 'Please enter a valid amount', true);
+                return;
+            }
+
+            const saleData = {
+                customerId: customerId,
+                discount: 0.00,
+                tax: 0.00,
+                paymentMethod: paymentMethod,
+                notes: notes,
+                saleItems: [
+                    {
+                        productId: "86da8d34-0fc4-47bf-b740-10830c8de945",
+                        quantity: 1,
+                        unitPrice: amount
+                    }
+                ]
+            };
+
+            try {
+                const response = await fetch(`${getApiUrl()}/api/sales`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    },
+                    body: JSON.stringify(saleData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showResult('createSaleResult', `Sale created successfully! Sale ID: ${result.id}<br>Final Amount: ${result.finalAmount}<br>Payment Method: ${result.paymentMethod}`);
+                } else {
+                    const errorText = await response.text();
+                    showResult('createSaleResult', `Error: ${errorText || response.statusText}`, true);
+                }
+            } catch (error) {
+                if (error.name === 'SyntaxError') {
+                    showResult('createSaleResult', `Error: Invalid response format from server. The API may not be available or returned an error page instead of JSON.`, true);
+                } else {
+                    showResult('createSaleResult', `Error: ${error.message}`, true);
+                }
+            }
+        }
+
+        // Function to generate Bakong QR code
+        async function generateBakongQR() {
+            const amount = parseFloat(document.getElementById('qrAmount').value);
+            const description = document.getElementById('qrDescription').value;
+            const referenceId = document.getElementById('qrReferenceId').value;
+
+            if (!amount || amount <= 0) {
+                showResult('qrResult', 'Please enter a valid amount', true);
+                return;
+            }
+
+            const qrData = {
+                merchantId: "norm_soklim@bkrt",
+                merchantName: "NORM SOKLIM",
+                amount: amount,
+                currency: "KHR",
+                description: description,
+                referenceId: referenceId
+            };
+
+            try {
+                const response = await fetch(`${getApiUrl()}/api/bakong-payment/generate`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    },
+                    body: JSON.stringify(qrData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showResult('qrResult', `QR Code generated successfully!<br>QR Text: ${result.qrCodeText}<br><br><div class="qr-container"><img src="data:image/png;base64,${result.qrCodeImage}" alt="Bakong QR Code" class="qr-code" /></div>`);
+                } else {
+                    const errorText = await response.text();
+                    showResult('qrResult', `Error: ${errorText || response.statusText}`, true);
+                }
+            } catch (error) {
+                if (error.name === 'SyntaxError') {
+                    showResult('qrResult', `Error: Invalid response format from server. The API may not be available or returned an error page instead of JSON.`, true);
+                } else {
+                    showResult('qrResult', `Error: ${error.message}`, true);
+                }
+            }
+        }
+
+        // Function to process Bakong payment for existing sale
+        async function processBakongPayment() {
+            const saleId = document.getElementById('saleId').value;
+            const description = document.getElementById('paymentDescription').value;
+
+            if (!saleId) {
+                showResult('processPaymentResult', 'Please enter a sale ID', true);
+                return;
+            }
+
+            const paymentData = {
+                description: description
+            };
+
+            try {
+                const response = await fetch(`${getApiUrl()}/api/sales/${saleId}/process-bakong-payment`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${getAuthToken()}`
+                    },
+                    body: JSON.stringify(paymentData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    showResult('processPaymentResult', `Bakong payment processed successfully!<br>QR Text: ${result.qrCodeText}<br><br><div class="qr-container"><img src="data:image/png;base64,${result.qrCodeImage}" alt="Bakong QR Code" class="qr-code" /></div>`);
+                } else {
+                    const errorText = await response.text();
+                    showResult('processPaymentResult', `Error: ${errorText || response.statusText}`, true);
+                }
+            } catch (error) {
+                if (error.name === 'SyntaxError') {
+                    showResult('processPaymentResult', `Error: Invalid response format from server. The API may not be available or returned an error page instead of JSON.`, true);
+                } else {
+                    showResult('processPaymentResult', `Error: ${error.message}`, true);
+                }
+            }
+        }
+
+        // Function to get QR code image
+        async function getQRCodeImage() {
+            const qrCodeData = document.getElementById('qrCodeData').value;
+
+            if (!qrCodeData) {
+                showResult('qrImageResult', 'Please enter QR code data', true);
+                return;
+            }
+
+            try {
+                const response = await fetch(`${getApiUrl()}/api/bakong-payment/qr-code?data=${encodeURIComponent(qrCodeData)}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                if (response.ok) {
+                    const blob = await response.blob();
+                    const imageUrl = URL.createObjectURL(blob);
+                    showResult('qrImageResult', `<div class="qr-container"><img src="${imageUrl}" alt="QR Code" class="qr-code" /></div>`);
+                } else {
+                    const result = await response.text();
+                    showResult('qrImageResult', `Error: ${result || response.statusText}`, true);
+                }
+            } catch (error) {
+                showResult('qrImageResult', `Error: ${error.message}`, true);
+            }
+        }
+
+        // Function to login and get JWT token
+        async function login() {
+            const username = document.getElementById('loginUsername').value;
+            const password = document.getElementById('loginPassword').value;
+
+            if (!username || !password) {
+                showResult('loginResult', 'Please enter both username and password', true);
+                return;
+            }
+
+            const loginData = {
+                username: username,
+                password: password
+            };
+
+            try {
+                const response = await fetch(`${getApiUrl()}/api/auth/login`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(loginData)
+                });
+
+                if (response.ok) {
+                    const result = await response.json();
+                    if (result.token) {
+                        document.getElementById('authToken').value = result.token;
+                        showResult('loginResult', 'Login successful! Token has been set in the authorization field.', false);
+                    } else {
+                        showResult('loginResult', 'Login successful but no token returned', true);
+                    }
+                } else {
+                    const errorText = await response.text();
+                    showResult('loginResult', `Login failed: ${errorText || response.statusText}`, true);
+                }
+            } catch (error) {
+                if (error.name === 'SyntaxError') {
+                    showResult('loginResult', `Error: Invalid response format from server. The API may not be available or returned an error page instead of JSON.`, true);
+                } else {
+                    showResult('loginResult', `Error: ${error.message}`, true);
+                }
+            }
+        }
+
+        // Initialize with default values
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('apiUrl').value = 'http://localhost:5055';
+            document.getElementById('customerId').value = '65e5041e-dc75-45b9-94b1-ee00b0e9b16d';
+        });
+    </script>
+</body>
+</html>

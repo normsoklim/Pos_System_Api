@@ -56,5 +56,19 @@ namespace PosSystem.Api.Controllers
             await _saleService.DeleteSaleAsync(id);
             return NoContent();
         }
+
+        [HttpPost("{id}/process-bakong-payment")]
+        [Authorize(Policy = "CanSell")]
+        public async Task<IActionResult> ProcessBakongPaymentForSale(Guid id, [FromBody] string? description = null)
+        {
+            var paymentResponse = await _saleService.ProcessBakongPaymentForSaleAsync(id, description);
+            
+            if (!paymentResponse.Success)
+            {
+                return BadRequest(new { message = paymentResponse.Message });
+            }
+
+            return Ok(paymentResponse);
+        }
     }
 }

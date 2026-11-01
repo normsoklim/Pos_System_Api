@@ -4,9 +4,8 @@ namespace PosSystem.Application.DTOs.Auth
 {
     public class RegisterDto
     {
-        [Required]
         [MaxLength(100)]
-        public required string Username { get; set; }
+        public string? Username { get; set; }
         
         [Required]
         [EmailAddress]
